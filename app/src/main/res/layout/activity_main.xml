@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.ravi.hiltonadmin.MainActivity"
+    android:orientation="vertical"
+    android:padding="50dp">
+
+    <TextView
+        android:id="@+id/tRegisterStatus"
+        android:layout_width="match_parent"
+        android:layout_height="33dp"
+        android:text="hello welcome" />
+
+    <EditText
+        android:id="@+id/ephone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:hint="Phone number" />
+
+
+    <EditText
+        android:id="@+id/eVerifycode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="write the code here" />
+
+    <Button
+        android:id="@+id/bsignup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:onClick="signup"
+        android:text="sign up" />
+    <Button
+        android:id="@+id/bVerify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Verify"
+        android:onClick="Verify"
+        />
+
+    <Button
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Resend"
+        android:onClick="Resend"
+        android:id="@+id/bResend"/>
+
+</LinearLayout>

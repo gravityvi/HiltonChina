@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "17623371398",
+    "firebase_url": "https://hiltonchina-6351c.firebaseio.com",
+    "project_id": "hiltonchina-6351c",
+    "storage_bucket": "hiltonchina-6351c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:17623371398:android:c55e8b8610716cb1",
+        "android_client_info": {
+          "package_name": "com.example.ravi.hiltonadmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "17623371398-g7skgli1p7uf34h1deu5p5rmtd860m1g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ravi.hiltonadmin",
+            "certificate_hash": "a54207cb09fe2c24bb29a819b75da15a71fa23a7"
+          }
+        },
+        {
+          "client_id": "17623371398-dbhr6vqb5hifeop75jf3a8a8gf7638tf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQ6_-JCx2I1qelrNxUpWq7Y1ICDypaWOI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "17623371398-dbhr6vqb5hifeop75jf3a8a8gf7638tf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
