@@ -2,12 +2,14 @@ package com.example.ravi.hiltonadmin;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.nfc.Tag;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.LoginFilter;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -15,7 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.google.firebase.database.*;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -27,24 +29,29 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
+import org.w3c.dom.EntityReference;
 import org.w3c.dom.Text;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
 
 public class MainActivity extends AppCompatActivity {
 
 
 
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
 
+    
     private Button bVerify;
     private Button bResend;
     private EditText eVerifyCode;
     private TextView tRegisterStatus;
     private EditText ephone;
-    private EditText epassword;
     private String mverificationid;
     private Button bsignup;
-    private TextView tlogin;
     private PhoneAuthProvider.ForceResendingToken mresendtoken;
     private boolean mverificationinprogress=false; //phone verification in progress.
     private FirebaseAuth firebaseAuth;
@@ -59,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
     private static final int STATE_VERIFY_SUCCESS =4;
     private static final int STATE_SIGNIN_FAILED =5;
     private static final int STATE_SIGNIN_SUCCESS =6;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
+        database =FirebaseDatabase.getInstance();
+        myRef = database.getReference("UserData");
          bResend=(Button)findViewById(R.id.bResend);
         bVerify=(Button)findViewById(R.id.bVerify);
         eVerifyCode=(EditText)findViewById(R.id.eVerifycode);
@@ -164,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         //check if user is signed in (non - null update UI accordingly)
         FirebaseUser CurrentUser=firebaseAuth.getCurrentUser();
+
         UpdateUI(CurrentUser);
 
         //
@@ -231,6 +243,8 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG,"signInWithCredential:Success");
 
                     FirebaseUser user= task.getResult().getUser();
+
+
 
                     UpdateUI(STATE_SIGNIN_SUCCESS,user);
                     //UpdateUi(STATE_SIGNIN_SUCCESS,credentials);
@@ -309,7 +323,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void UpdateUI(int uistate,FirebaseUser user, PhoneAuthCredential cred)
+    private void UpdateUI(int uistate, final FirebaseUser user, PhoneAuthCredential cred)
     {
         switch (uistate){
 
@@ -369,8 +383,34 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case STATE_SIGNIN_SUCCESS:
-                Intent i=new Intent(this,Home.class);
-                startActivity(i);
+
+                Log.d(TAG,"state signin success");
+                disableViews(ephone,bVerify,bsignup,eVerifyCode,bResend);
+                Query UserIdPresent=myRef.orderByKey().equalTo(user.getUid());
+                UserIdPresent.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(!dataSnapshot.exists())
+                        {
+                            Log.d(TAG,"UserId does not exists");
+                            EnterUserInfo(user);
+                        }
+
+                        else
+                        {
+                            Log.d(TAG,"UserId exist");
+                            EnterHome();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
                 break;
         }
 
@@ -407,20 +447,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void signup(View view)
     {
-        String ravi=ephone.getText().toString();
 
 
-        if(validatephonenumber())
+        if(!validatephonenumber())
         {
-            startphonenumberverification(ephone.getText().toString());
+            ephone.setError("cannot be empty");
         }
-
         else
         {
 
-
-        Toast.makeText(this,"enter proper phone number",Toast.LENGTH_LONG).show();
-
+            startphonenumberverification(ephone.getText().toString().trim());
         }
     }
 
@@ -444,10 +480,27 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void EnterUserInfo(FirebaseUser user)
+    {
+        Log.d(TAG,"Entering UserInfo");
+        Intent i=new Intent(this,UserInfo.class);
+        Bundle extras=new Bundle();
+        extras.putString("PhoneNumber",user.getPhoneNumber());
+        extras.putString("UserId",user.getUid());
+        i.putExtras(extras);
+        startActivity(i);
+        finish();//to destroy the this activity
+    }
 
 
+    public void EnterHome()
+    {
+        Log.d(TAG,"Entering Home");
+        Intent i=new Intent(this,Home.class);
+        startActivity(i);
+        finish(); //to destroy this activity
 
-
+    }
 
 
 

@@ -23,6 +23,7 @@ public class Home extends AppCompatActivity {
         firebaseAuth.signOut();
         Intent i=new Intent(this,MainActivity.class);
         startActivity(i);
+        finish(); //to destroy this activity
 
     }
 }
