@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText ephone;
     private String mverificationid;
     private Button bsignup;
-    private PhoneAuthProvider.ForceResendingToken mresendtoken;
+    private PhoneAuthProvider.ForceResendingToken mresendtoken; //used when to resend the code on the phonenumber
     private boolean mverificationinprogress=false; //phone verification in progress.
     private FirebaseAuth firebaseAuth;
     private static final String KEY_VERIFY_IN_PROGRESS="key_verify_in_progress";
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        //Restore instance state
+        //Restore instance state if the user is already logged in
         if(savedInstanceState!=null)
         {
             onRestoreInstanceState(savedInstanceState);
@@ -114,9 +114,9 @@ public class MainActivity extends AppCompatActivity {
                 //user action
                 Log.d(TAG,"onVerificationCompleted:"+phoneAuthCredential);
                 mverificationinprogress=false;
-                UpdateUI(STATE_VERIFY_SUCCESS,phoneAuthCredential);
+                UpdateUI(STATE_VERIFY_SUCCESS,phoneAuthCredential);  //Verified and User is provided in the PhoneAuth credentials
 
-                SignInWithPhoneAuthCredential(phoneAuthCredential);
+                SignInWithPhoneAuthCredential(phoneAuthCredential);//after verification sign in the user
             }
 
             @Override
@@ -173,6 +173,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        Log.d(TAG,"on Start Called");
         //check if user is signed in (non - null update UI accordingly)
         FirebaseUser CurrentUser=firebaseAuth.getCurrentUser();
 
@@ -194,6 +196,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+
+        Log.d(TAG,"on Save Instance Called");
+
         super.onSaveInstanceState(outState, outPersistentState);
         outState.putBoolean(KEY_VERIFY_IN_PROGRESS,mverificationinprogress);
     }
@@ -204,6 +209,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
+
+        Log.d(TAG,"onRestore Instance Called");
         super.onRestoreInstanceState(savedInstanceState);
         mverificationinprogress=savedInstanceState.getBoolean(KEY_VERIFY_IN_PROGRESS);
     }
@@ -213,6 +220,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void startphonenumberverification(String phonenumber)
     {
+        Log.d(TAG,"No Current User, starting phone Verification");
         PhoneAuthProvider.getInstance().verifyPhoneNumber(phonenumber,120, TimeUnit.SECONDS,this,mcallsbacks);
         mverificationinprogress=true;
     }
@@ -221,12 +229,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void verifyPhoneNumberWithCode(String verificationid,String code)
     {
+        Log.d(TAG,"Code entered verifying code started");
+
+        //code has been entered by user check for the code if it is correct
         PhoneAuthCredential credential=PhoneAuthProvider.getCredential(verificationid,code);
         SignInWithPhoneAuthCredential(credential);
     }
 
     private void resendVerifiacationCode(String PhoneNumber,PhoneAuthProvider.ForceResendingToken token)
     {
+        Log.d(TAG,"Resend Verification called");
         PhoneAuthProvider.getInstance().verifyPhoneNumber(PhoneNumber,60,TimeUnit.SECONDS,this,mcallsbacks,token);
     }
 
@@ -331,6 +343,8 @@ public class MainActivity extends AppCompatActivity {
                 //Intialized state, show only the phone number field and the start button
                 //enable views
                 //disable views
+                Log.d(TAG,"State Initialized");
+                tRegisterStatus.setText("Welcome User");
                 enableViews(bsignup,ephone);
                 disableViews(bVerify,bResend,eVerifyCode);
 
@@ -341,6 +355,9 @@ public class MainActivity extends AppCompatActivity {
             case STATE_CODE_SENT:
                 //code sent state , show only the verification field,
                 //setContentView(R.layout.code_verify);
+
+                Log.d(TAG,"State Code Sent");
+
                 tRegisterStatus.setText("Code has been sent please enter the received code under the space provided\n In Case of you have entered wrong phone number change it and press resend");
                 enableViews(bVerify,bResend,ephone,eVerifyCode);
                 disableViews(bsignup);
@@ -349,7 +366,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case STATE_VERIFY_FAILED:
-                //Code sent state, show the verifiacation field
+                Log.d(TAG,"State Verify failed");
+
+                //verification failed
+                tRegisterStatus.setText("oops something went wrong");
                 enableViews(ephone,bsignup);
                 disableViews(eVerifyCode,bVerify,bResend);
                 setContentView(R.layout.activity_main);
@@ -358,6 +378,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case STATE_VERIFY_SUCCESS:
+
+                Log.d(TAG,"State Verify Success");
+
+                tRegisterStatus.setText("Verification Complete");
                 //verification has suceeded, proceed to firebase sign in
                 disableViews(eVerifyCode,ephone,bResend,bVerify,bsignup);
                 if(cred!=null) {
@@ -377,14 +401,19 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case STATE_SIGNIN_FAILED:
+                Log.d(TAG,"State SignIn Failed");
+
 
 
                 UpdateUI(STATE_INITIALIZED);
+                tRegisterStatus.setText(" Retry SignIn Process");
                 break;
 
             case STATE_SIGNIN_SUCCESS:
 
                 Log.d(TAG,"state signin success");
+
+                tRegisterStatus.setText("Signed In Succesfully");
                 disableViews(ephone,bVerify,bsignup,eVerifyCode,bResend);
                 Query UserIdPresent=myRef.orderByKey().equalTo(user.getUid());
                 UserIdPresent.addValueEventListener(new ValueEventListener() {
@@ -405,7 +434,8 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
+                        Log.d(TAG,"user cancelled signin process");
+                        tRegisterStatus.setText("Sign In Cancelled");
                     }
                 });
 
