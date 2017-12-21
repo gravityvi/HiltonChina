@@ -7,12 +7,21 @@
     android:orientation="vertical"
     tools:context="com.example.ravi.hiltonadmin.Home">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vImageAnimation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-    </android.support.v4.view.ViewPager>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vImageSlider"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"></android.support.v4.view.ViewPager>
+    
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/lSliderDots"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal"></LinearLayout>
+
     <Button
 
         android:layout_width="wrap_content"
