@@ -35,18 +35,17 @@ public class Home extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
             switch (item.getItemId()) {
                 case R.id.navigation_settings:
-
-
+                    transaction.replace(R.id.lFragmentContent, new SettingsFragment()).commit();
                     return true;
+
                 case R.id.navigation_history:
 
                     return true;
                 case R.id.navigation_home:
-
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    FragmentTransaction transaction = fragmentManager.beginTransaction();
                     transaction.replace(R.id.lFragmentContent, new HomeFragment()).commit();
                     return true;
                 case R.id.navigation_cart:
@@ -68,7 +67,7 @@ public class Home extends AppCompatActivity {
 
         BottomNavigationView BottomNavigation = (BottomNavigationView) findViewById(R.id.BottomNavigation);
         BottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
+        BottomNavigation.setSelectedItemId(R.id.navigation_home);
 
     }
 }

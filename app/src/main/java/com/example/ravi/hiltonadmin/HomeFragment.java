@@ -45,6 +45,7 @@ public class HomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private View view;
 
     private OnFragmentInteractionListener mListener;
 
@@ -76,6 +77,11 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
+
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -88,13 +94,17 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Log.d(TAG,"On Create View called");
-        View view=inflater.inflate(R.layout.fragment_home, container, false);
+        Log.d(TAG,"Home Fragment On Create View called");
+         view=inflater.inflate(R.layout.fragment_home, container, false);
 
-        /******************For Image Slider Present at the Home Page***/
+
 
         ViewPager=(ViewPager)view.findViewById(R.id.vImageSlider);//image slider viewpager
         lSliderdots=(LinearLayout)view.findViewById(R.id.lSliderDots); //dots below it
+
+
+        /******************For Image Slider Present at the Home Page***/
+
 
 
         ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getContext());
@@ -144,8 +154,6 @@ public class HomeFragment extends Fragment {
 
             }
         });
-
-
         /***********************************************************/
 
 
@@ -172,7 +180,8 @@ public class HomeFragment extends Fragment {
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-            Toast.makeText(context,"Notificayion",Toast.LENGTH_LONG);
+           Log.d(TAG,"Home Fragment onAttach called");
+
         }
     }
 
@@ -180,6 +189,7 @@ public class HomeFragment extends Fragment {
     public void onDetach() //LEARN ABOUT THIS
     {
         super.onDetach();
+        Log.d(TAG,"Home Fragment onDetach called");
         mListener = null;
     }
 
@@ -207,24 +217,29 @@ public class HomeFragment extends Fragment {
 
         @Override
         public void run() {
-        getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
+
+            if(getActivity()!=null)
+            {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
 
 
-                    if(ViewPager.getCurrentItem() ==0)
-                        ViewPager.setCurrentItem(1);
-                    else if(ViewPager.getCurrentItem()==1)
-                        ViewPager.setCurrentItem(2);
-                    else if(ViewPager.getCurrentItem()==2)
-                        ViewPager.setCurrentItem(0);
+                        if(ViewPager.getCurrentItem() ==0)
+                            ViewPager.setCurrentItem(1);
+                        else if(ViewPager.getCurrentItem()==1)
+                            ViewPager.setCurrentItem(2);
+                        else if(ViewPager.getCurrentItem()==2)
+                            ViewPager.setCurrentItem(0);
 
-                }
-            });
+                    }
+                });
+            }
+
         }
     }
 
-    /*******************************************/
+    /*******************************************************/
 }
 
 

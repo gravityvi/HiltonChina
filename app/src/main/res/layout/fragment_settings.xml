@@ -1,0 +1,112 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.ravi.hiltonadmin.SettingsFragment">
+
+   <LinearLayout
+       android:id="@+id/lHeader_Settings"
+       android:background="#ff0000"
+       android:layout_width="match_parent"
+       android:orientation="horizontal"
+       android:layout_height="125dp">
+       <ImageView
+           android:layout_weight="2"
+           android:src="@drawable/user_image"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent" />
+       <LinearLayout
+           android:paddingLeft="10dp"
+           android:paddingBottom="5dp"
+           android:layout_weight="1"
+           android:orientation="vertical"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+
+           <TextView
+               android:id="@+id/tUsername_Settings"
+               android:layout_marginTop="10dp"
+               android:textColor="#000"
+               android:textSize="18dp"
+               android:text="USERNAME: james"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tEmail_Settings"
+                android:textSize="18dp"
+                android:textColor="#000"
+                android:text="EMAIL: emailAddress@gmail.com "
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+           <TextView
+               android:id="@+id/tPhone_Settings"
+               android:textSize="18dp"
+               android:textColor="#000"
+               android:text="PHONE: 7043614334 "
+               android:layout_marginTop="10dp"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" />
+       </LinearLayout>
+
+
+   </LinearLayout>
+<ScrollView
+    android:layout_below="@+id/lHeader_Settings"
+    android:layout_width="match_parent"
+    android:background="#FFCDD2"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+
+        android:padding="40dp"
+
+        android:orientation="vertical"
+        android:layout_below="@+id/lHeader_Settings"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:textColor="#ff00"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:text="Change your Username and EmailAddress here. Enter in the fields and press Change"/>
+        <TextView
+            android:textSize="16dp"
+            android:text="Change your Username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/eUsername_Settings"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="30dp"
+            android:hint="Enter Your Desired Username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:textSize="16dp"
+            android:text="Change your EmailAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/eEmail_Settings"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="30dp"
+            android:hint="Enter a Valid Email Address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <Button
+            android:id="@+id/bChange"
+            android:onClick="Change"
+            android:background="#2196F3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change"/>
+    </LinearLayout>
+</ScrollView>
+
+</RelativeLayout>
