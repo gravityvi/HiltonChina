@@ -52,7 +52,7 @@ public class Home extends AppCompatActivity {
 
                     return true;
                 case R.id.navigation_order:
-
+                    transaction.replace(R.id.lFragmentContent,new OrderFragment()).commit();
                     return true;
             }
             return false;

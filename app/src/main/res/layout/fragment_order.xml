@@ -2,16 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000000"
     tools:context="com.example.ravi.hiltonadmin.OrderFragment">
-<ScrollView
+<android.support.v7.widget.RecyclerView
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:orientation="vertical"
-       android:layout_height="match_parent">
-       
+    android:layout_height="match_parent"
+    android:id="@+id/rCategoriesList">
 
-   </LinearLayout>
-</ScrollView>
+</android.support.v7.widget.RecyclerView>
 </RelativeLayout>
