@@ -1,13 +1,15 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="#bab4b4"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context="com.example.ravi.hiltonadmin.ItemsFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/rItemsList"></android.support.v7.widget.RecyclerView>
 
-</LinearLayout>
+</RelativeLayout>

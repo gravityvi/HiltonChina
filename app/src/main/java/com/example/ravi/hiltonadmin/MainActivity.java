@@ -1,5 +1,6 @@
 package com.example.ravi.hiltonadmin;
 
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -427,7 +428,7 @@ public class MainActivity extends AppCompatActivity {
 
                         else
                         {
-                            Log.d(TAG,"UserId exist");
+                            Log.d(TAG,"UserId exist"+dataSnapshot.getKey());
                             EnterHome();
                         }
                     }

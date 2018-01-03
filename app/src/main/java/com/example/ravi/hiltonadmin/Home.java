@@ -48,7 +48,9 @@ public class Home extends AppCompatActivity {
                 case R.id.navigation_home:
                     transaction.replace(R.id.lFragmentContent, new HomeFragment()).commit();
                     return true;
+
                 case R.id.navigation_cart:
+                    transaction.replace(R.id.lFragmentContent,new CartFragment()).commit();
 
                     return true;
                 case R.id.navigation_order:

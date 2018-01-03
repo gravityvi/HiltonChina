@@ -3,10 +3,16 @@ package com.example.ravi.hiltonadmin;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
 
 
 /**
@@ -27,26 +33,29 @@ public class ItemsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private RecyclerView recyclerView;
+
     private OnFragmentInteractionListener mListener;
+    private ArrayList<Items> arrayList;
 
     public ItemsFragment() {
         // Required empty public constructor
     }
 
+
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+
      * @return A new instance of fragment ItemsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ItemsFragment newInstance(String param1, String param2) {
+    public static ItemsFragment newInstance(ArrayList<Items> arrayList) {
         ItemsFragment fragment = new ItemsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putParcelableArrayList("hello",arrayList);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,8 +64,8 @@ public class ItemsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+           this.arrayList = getArguments().getParcelableArrayList("hello");
+
         }
     }
 
@@ -64,7 +73,13 @@ public class ItemsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_items, container, false);
+
+        View view=inflater.inflate(R.layout.fragment_items, container, false);
+        recyclerView=view.findViewById(R.id.rItemsList);
+        ItemListAdapter adapter=new ItemListAdapter(getContext(),arrayList);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:background="#ffffff"
+    android:id="@+id/lCartRow"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:elevation="5dp"
+    android:layout_margin="10dp"
+    android:padding="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="170dp"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_weight="3"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_weight="1"
+            android:src="@drawable/user_image"
+            android:background="#ffffff"
+            android:id="@+id/iItemImage1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_weight="4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:background="@drawable/round_button"
+                android:textSize="10dp"
+                android:text="+"
+                android:textColor="#fff"
+                android:layout_weight="1"
+                android:id="@+id/bIncrease1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+            <TextView
+
+                android:gravity="center"
+                android:textColor="#ff0000"
+                android:textSize="13dp"
+                android:text="1"
+                android:layout_weight="1"
+                android:id="@+id/tItemNumber1"
+                android:inputType="number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:background="@drawable/round_button"
+                android:textSize="10dp"
+                android:text="-"
+                android:textColor="#fff"
+                android:layout_weight="1"
+                android:id="@+id/bDecrease1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tItemName1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:textColor="#000"
+            android:text="Item Name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+        <TextView
+            android:id="@+id/tItemDescription1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_weight="2"
+            android:text="Item Description" />
+
+
+
+        <LinearLayout
+            android:layout_weight="2"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="right">
+
+            <TextView
+                android:layout_weight="1"
+                android:textColor="#000000"
+                android:textSize="16dp"
+                android:text="Price: 50"
+                android:id="@+id/tItemPrice1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+
+                />
+
+            <Button
+                android:elevation="10dp"
+                android:background="#ff0000"
+                android:layout_weight="1"
+                android:id="@+id/bRemove1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Remove" />
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

@@ -96,7 +96,6 @@ public class OrderFragment extends Fragment {
                 {
                     //data.getKey();
                     arrayList.add(data.getKey().toString());
-                    Log.d(TAG,"hello"+arrayList);
                     rCategoriesList=(RecyclerView) layout.findViewById(R.id.rCategoriesList);
                     CategoriesListAdapter adapter=new CategoriesListAdapter(getContext(),arrayList,getActivity().getSupportFragmentManager());
                     rCategoriesList.setAdapter(adapter);
