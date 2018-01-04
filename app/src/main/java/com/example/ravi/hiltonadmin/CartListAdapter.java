@@ -31,7 +31,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
     public CartListAdapter(Context context, ArrayList<Items> CartList)
     {
         this.context=context;
-        this.CartList=CartList;
+        this.CartList=CartList;//Cart Items
         inflater= LayoutInflater.from(context);
     }
 
@@ -47,18 +47,20 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
 
         Items item=CartList.get(position);
 
-        holder.tItemNumber1.setText(item.getItemNumber());
-        holder.tItemName1.setText(item.getItemName());
-        holder.tItemPrice1.setText("PRICE: "+item.getItemPrice());
-        holder.tDesc1.setText(item.getItemDescription());
+        holder.tItemNumber1.setText(item.getItemNumber());//Setting ItemNumber
+        holder.tItemName1.setText(item.getItemName());//Setting ItemNumber
+        holder.tItemPrice1.setText("PRICE: "+item.getItemPrice());//Setting ItemPrice
+        holder.tDesc1.setText(item.getItemDescription());//Setting Item Description
+        //Setting Item Image
         Bitmap bmp= BitmapFactory.decodeByteArray(item.getImage(),0,item.getImage().length);
         holder.iItemImage1.setImageBitmap(bmp);
 
+        //functionality to increase ItemNumber
         holder.bIncrease1.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                int a=Integer.parseInt(holder.tItemNumber1.getText().toString());
+                int a=Integer.parseInt(holder.tItemNumber1.getText().toString()); // getting ItemNumber
                 a++;
                 holder.tItemNumber1.setText(Integer.toString(a));
             }
@@ -68,7 +70,9 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
         holder.bDecrease1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int a=Integer.parseInt(holder.tItemNumber1.getText().toString());
+                int a=Integer.parseInt(holder.tItemNumber1.getText().toString()); //getting ItemNumber
+
+                //Implying condition ItemNumber cannot be less than zero
                 if(a<0)
                     Toast.makeText(context,"can't do that",Toast.LENGTH_SHORT).show();
                 else

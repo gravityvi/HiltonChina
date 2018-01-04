@@ -58,15 +58,16 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final Items item= arrayList.get(position);
+        final Items item= arrayList.get(position);//Item with the index position in arrayList
 
 
 
 
 
-        holder.tItemName.setText(item.getItemName());
-        holder.tItemPrice.setText("PRICE: "+item.getItemPrice());
-        holder.tDesc.setText(item.getItemDescription());
+        holder.tItemName.setText(item.getItemName());//Setting ItemName
+        holder.tItemPrice.setText("PRICE: "+item.getItemPrice());//Setting ItemPrice
+        holder.tDesc.setText(item.getItemDescription());//Setting ItemDescription
+        //Setting ItemImage
         Bitmap bmp= BitmapFactory.decodeByteArray(item.getImage(),0,item.getImage().length);
         holder.iItemImage.setImageBitmap(bmp);
 
@@ -109,6 +110,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
                 FirebaseUser user=firebaseAuth.getCurrentUser();
                 String userUid=user.getUid();
 
+                //adding Selected Item Into database
                 databaseReference.child(userUid).child("Cart").child(item.getItemId()).child("ItemNumber").setValue(holder.tItemNumber.getText().toString());
                 databaseReference.child(userUid).child("Cart").child(item.getItemId()).child("ItemCategory").setValue(item.getItemCategory());
                 

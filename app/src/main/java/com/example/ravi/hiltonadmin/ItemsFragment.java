@@ -8,6 +8,7 @@ import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,7 @@ public class ItemsFragment extends Fragment {
     private String mParam2;
 
     private RecyclerView recyclerView;
-
+    private static final String TAG="PhoneAuthActivity";
     private OnFragmentInteractionListener mListener;
     private ArrayList<Items> arrayList;
 
@@ -55,7 +56,7 @@ public class ItemsFragment extends Fragment {
     public static ItemsFragment newInstance(ArrayList<Items> arrayList) {
         ItemsFragment fragment = new ItemsFragment();
         Bundle args = new Bundle();
-        args.putParcelableArrayList("hello",arrayList);
+        args.putParcelableArrayList("ItemList",arrayList); //getting Items arraylist created in Order Fragment or CategoriesListAdapter
         fragment.setArguments(args);
         return fragment;
     }
@@ -64,7 +65,7 @@ public class ItemsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-           this.arrayList = getArguments().getParcelableArrayList("hello");
+           this.arrayList = getArguments().getParcelableArrayList("ItemList");//got the arraylist of ItemData
 
         }
     }
@@ -95,13 +96,14 @@ public class ItemsFragment extends Fragment {
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-            //
+            Log.d(TAG,"Items Fragment onAttach called");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        Log.d(TAG,"Items Fragment onDetach called");
         mListener = null;
     }
 

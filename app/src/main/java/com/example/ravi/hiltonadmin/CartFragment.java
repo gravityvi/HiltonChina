@@ -87,11 +87,11 @@ public class CartFragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_cart, container, false);
 
         recyclerView=view.findViewById(R.id.rCartView);
-        CartItems=new ArrayList<>();
+        CartItems=new ArrayList<>();//creating Arraylist of type Items to add Cart Items in database into this array
         cartListAdapter=new CartListAdapter(getContext(),CartItems);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
-        databaseReference= FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid());
+        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();//getting the current User
+        databaseReference= FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid());//going in User profile to read Cart data
         value1=new ValueEventListener(){
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -99,24 +99,26 @@ public class CartFragment extends Fragment {
 
                 for(DataSnapshot data: dataSnapshot.child("Cart").getChildren())
                 {
-                    final String ItemId= data.getKey();
-                    final String ItemCategory=data.child("ItemCategory").getValue(String.class);
-                    final String ItemNumber=data.child("ItemNumber").getValue(String.class);
+                    final String ItemId= data.getKey();//getting Item Key
+                    final String ItemCategory=data.child("ItemCategory").getValue(String.class);//getting Item Category
+                    final String ItemNumber=data.child("ItemNumber").getValue(String.class);//getting ItemNumber or number of order
 
 
-                    Log.d(TAG,"hello"+ItemCategory +ItemId);
 
 
-                    ItemData=FirebaseDatabase.getInstance().getReference("ItemData").child(ItemCategory).child(ItemId);
+
+                    ItemData=FirebaseDatabase.getInstance().getReference("ItemData").child(ItemCategory).child(ItemId);//going directly to Item to retrive ItemData
 
                     value=new ValueEventListener()
                     {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            final String ItemName=dataSnapshot.child("Name").getValue(String.class);
-                            final String ItemDescription=dataSnapshot.child("Desc").getValue(String.class);
-                            final String ItemPrice=dataSnapshot.child("Price").getValue(String.class);
-                            //getting Image File From url of Database
+                            final String ItemName=dataSnapshot.child("Name").getValue(String.class);//getting ItemName
+                            final String ItemDescription=dataSnapshot.child("Desc").getValue(String.class);//getting ItemDescription
+                            final String ItemPrice=dataSnapshot.child("Price").getValue(String.class);//getting ItemPrice
+
+
+                            //getting Image File From url of Database--
                             String ImageUrl= dataSnapshot.child("Image").getValue(String.class);
                             StorageReference storageReference= FirebaseStorage.getInstance().getReferenceFromUrl(ImageUrl);
                             storageReference.getBytes(1024*1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -179,7 +181,7 @@ public class CartFragment extends Fragment {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             //on attach called
-
+            Log.d(TAG,"Cart Fragment on Attach called ");
         }
     }
 
@@ -187,8 +189,12 @@ public class CartFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        Log.d(TAG,"Cart Fragment on Detach called");
+
+        //removing value event listner so that they does not create problem
         ItemData.removeEventListener(value);
         databaseReference.removeEventListener(value1);
+
     }
 
     /**

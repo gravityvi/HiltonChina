@@ -37,7 +37,7 @@ public class OrderFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     private RecyclerView rCategoriesList;
-    private static final String TAG="PhoneAuthActivity";
+    private static final String TAG="PhoneAuthActivity"; // Tag for the programmer
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -87,7 +87,7 @@ public class OrderFragment extends Fragment {
         // Inflate the layout for this fragment
         layout=inflater.inflate(R.layout.fragment_order, container, false);
 
-         arrayList=new ArrayList<String>();
+         arrayList=new ArrayList<String>(); // arraylist for adding all categories
          DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("ItemData");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override

@@ -53,7 +53,7 @@ public class CategoriesListAdapter extends RecyclerView.Adapter<CategoriesListAd
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-       Log.d(TAG,"CategoriesAdapter onCreateViewHolder called");
+
         View view= inflator.inflate(R.layout.categories_row,parent,false);
        ViewHolder viewHolder=new ViewHolder(view);
        databaseReference= FirebaseDatabase.getInstance().getReference("ItemData");
@@ -69,7 +69,7 @@ public class CategoriesListAdapter extends RecyclerView.Adapter<CategoriesListAd
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Log.d(TAG,"CategoriesAdapter onBindViewHolder called");
+
 
         /************************adding different colours to rows*********************/
         if(position%2==0) {
@@ -89,7 +89,7 @@ public class CategoriesListAdapter extends RecyclerView.Adapter<CategoriesListAd
             @Override
             public void onClick(View view) {
 
-                //getting values from database
+                //getting values from database of prticular category choosen
                final ArrayList<Items> ItemList=new ArrayList<>();
                 databaseReference.child(holder.CategoriesRowTitle.getText().toString()).addValueEventListener(new ValueEventListener() {
                     @Override
@@ -97,12 +97,12 @@ public class CategoriesListAdapter extends RecyclerView.Adapter<CategoriesListAd
                         for(DataSnapshot data: dataSnapshot.getChildren())
                         {
 
-                            final String ItemCategory=holder.CategoriesRowTitle.getText().toString();
-                            final String ItemId=data.getKey();
-                            final String ItemName=data.child("Name").getValue(String.class);
-                            final String Desc=data.child("Desc").getValue(String.class);
-                            final String ItemPrice=data.child("Price").getValue(String.class);
-                            final String ItemNumber="1";
+                            final String ItemCategory=holder.CategoriesRowTitle.getText().toString();//adding item Category
+                            final String ItemId=data.getKey();//adding Item key
+                            final String ItemName=data.child("Name").getValue(String.class);//adding Item Name
+                            final String Desc=data.child("Desc").getValue(String.class);// adding Item Description
+                            final String ItemPrice=data.child("Price").getValue(String.class);//adding Item price
+                            final String ItemNumber="1";//Default value of Number of orders initially for items
 
 
                             //getting Image File From url of Database
@@ -114,8 +114,10 @@ public class CategoriesListAdapter extends RecyclerView.Adapter<CategoriesListAd
 
                                     //Creating Fragment for selected row and adding Categories Items to the arraylist and passing to the ItemsFragment
 
-                                    Items item=new Items(ItemId,bytes,ItemName,ItemCategory,ItemNumber,Desc,ItemPrice);
-                                    ItemList.add(item);
+                                    Items item=new Items(ItemId,bytes,ItemName,ItemCategory,ItemNumber,Desc,ItemPrice);//Items class contain all field needed
+                                    ItemList.add(item);//adding item
+
+                                    //replacing fragment with Items of a Particular Category
                                     FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
                                     fragmentTransaction.addToBackStack("Categories");//adding Categories to the backstack
                                     fragmentTransaction.replace(R.id.lFragmentContent,ItemsFragment.newInstance(ItemList)).commit();
