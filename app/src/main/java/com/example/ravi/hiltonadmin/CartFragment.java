@@ -43,7 +43,7 @@ public class CartFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private int Count=0;
     private DatabaseReference ItemData;
     private OnFragmentInteractionListener mListener;
     private RecyclerView recyclerView;
@@ -96,7 +96,7 @@ public class CartFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-
+                final long NumberOfItems=dataSnapshot.getChildrenCount();
                 for(DataSnapshot data: dataSnapshot.child("Cart").getChildren())
                 {
                     final String ItemId= data.getKey();//getting Item Key
@@ -124,10 +124,13 @@ public class CartFragment extends Fragment {
                             storageReference.getBytes(1024*1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                                 @Override
                                 public void onSuccess(byte[] bytes) {
-
+                                    Count++;
                                     CartItems.add(new Items(ItemId,bytes,ItemName,ItemCategory,ItemNumber,ItemDescription,ItemPrice));
 
-                                    recyclerView.setAdapter(cartListAdapter);
+                                    if(Count==NumberOfItems)//Things to be Performed only once
+                                        recyclerView.setAdapter(cartListAdapter);
+
+
 
 
                                 }

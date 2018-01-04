@@ -73,7 +73,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
                 int a=Integer.parseInt(holder.tItemNumber1.getText().toString()); //getting ItemNumber
 
                 //Implying condition ItemNumber cannot be less than zero
-                if(a<0)
+                if(a<=1)
                     Toast.makeText(context,"can't do that",Toast.LENGTH_SHORT).show();
                 else
                 {

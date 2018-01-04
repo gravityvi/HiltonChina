@@ -89,7 +89,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
             @Override
             public void onClick(View view) {
                 int a=Integer.parseInt(holder.tItemNumber.getText().toString());
-                if(a<0)
+                if(a<=1)
                     Toast.makeText(context,"can't do that",Toast.LENGTH_SHORT).show();
                 else
                 {
@@ -113,6 +113,8 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
                 //adding Selected Item Into database
                 databaseReference.child(userUid).child("Cart").child(item.getItemId()).child("ItemNumber").setValue(holder.tItemNumber.getText().toString());
                 databaseReference.child(userUid).child("Cart").child(item.getItemId()).child("ItemCategory").setValue(item.getItemCategory());
+
+                Toast.makeText(context,"Item Added to Cart",Toast.LENGTH_LONG).show();
                 
 
 

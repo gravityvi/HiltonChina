@@ -42,6 +42,7 @@ public class CategoriesListAdapter extends RecyclerView.Adapter<CategoriesListAd
     private Context context;
     private FirebaseStorage storage;
     private FragmentManager fragmentManager;
+    private int Count=0; //count variable
     CategoriesListAdapter(Context context, ArrayList<String> arrayList, FragmentManager fragmentManager)
 
     {
@@ -50,6 +51,8 @@ public class CategoriesListAdapter extends RecyclerView.Adapter<CategoriesListAd
         this.arrayList=arrayList;
         inflator= LayoutInflater.from(context);
     }
+
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -93,9 +96,13 @@ public class CategoriesListAdapter extends RecyclerView.Adapter<CategoriesListAd
                final ArrayList<Items> ItemList=new ArrayList<>();
                 databaseReference.child(holder.CategoriesRowTitle.getText().toString()).addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for(DataSnapshot data: dataSnapshot.getChildren())
+                    public void onDataChange(final DataSnapshot dataSnapshot) {
+                        Count=0;
+                        final long NumberOfItems=dataSnapshot.getChildrenCount();
+
+                        for(final DataSnapshot data: dataSnapshot.getChildren())
                         {
+
 
                             final String ItemCategory=holder.CategoriesRowTitle.getText().toString();//adding item Category
                             final String ItemId=data.getKey();//adding Item key
@@ -116,11 +123,15 @@ public class CategoriesListAdapter extends RecyclerView.Adapter<CategoriesListAd
 
                                     Items item=new Items(ItemId,bytes,ItemName,ItemCategory,ItemNumber,Desc,ItemPrice);//Items class contain all field needed
                                     ItemList.add(item);//adding item
+                                    Count++;
+                                    if(Count==dataSnapshot.getChildrenCount())//Things to be performed only at the end
+                                         {
+                                        //replacing fragment with Items of a Particular Category
 
-                                    //replacing fragment with Items of a Particular Category
-                                    FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                                    fragmentTransaction.addToBackStack("Categories");//adding Categories to the backstack
-                                    fragmentTransaction.replace(R.id.lFragmentContent,ItemsFragment.newInstance(ItemList)).commit();
+                                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                        fragmentTransaction.addToBackStack("Categories");//adding Categories to the backstack
+                                        fragmentTransaction.replace(R.id.lFragmentContent, ItemsFragment.newInstance(ItemList)).commit();
+                                    }
 
                                 }
                             });
@@ -130,6 +141,8 @@ public class CategoriesListAdapter extends RecyclerView.Adapter<CategoriesListAd
 
 
                         }
+
+
 
                     }
 
@@ -147,7 +160,7 @@ public class CategoriesListAdapter extends RecyclerView.Adapter<CategoriesListAd
 
     @Override
     public int getItemCount() {
-        Log.d(TAG,"CategoriesAdapter getCountCalled");
+
         return arrayList.size();
     }
 
