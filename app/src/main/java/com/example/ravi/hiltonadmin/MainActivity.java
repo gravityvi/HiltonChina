@@ -52,10 +52,12 @@ public class MainActivity extends AppCompatActivity {
     private TextView tRegisterStatus;
     private EditText ephone;
     private String mverificationid;
+    private ValueEventListener valueEventListener;
     private Button bsignup;
     private PhoneAuthProvider.ForceResendingToken mresendtoken; //used when to resend the code on the phonenumber
     private boolean mverificationinprogress=false; //phone verification in progress.
     private FirebaseAuth firebaseAuth;
+    private Query UserIdPresent;
     private static final String KEY_VERIFY_IN_PROGRESS="key_verify_in_progress";
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mcallsbacks;
     private static final String TAG="PhoneAuthActivity";
@@ -416,8 +418,8 @@ public class MainActivity extends AppCompatActivity {
 
                 tRegisterStatus.setText("Signed In Succesfully");
                 disableViews(ephone,bVerify,bsignup,eVerifyCode,bResend);
-                Query UserIdPresent=myRef.orderByKey().equalTo(user.getUid());
-                UserIdPresent.addValueEventListener(new ValueEventListener() {
+                UserIdPresent=myRef.orderByKey().equalTo(user.getUid());
+                valueEventListener=new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if(!dataSnapshot.exists())
@@ -438,7 +440,8 @@ public class MainActivity extends AppCompatActivity {
                         Log.d(TAG,"user cancelled signin process");
                         tRegisterStatus.setText("Sign In Cancelled");
                     }
-                });
+                };
+                UserIdPresent.addValueEventListener(valueEventListener);
 
 
 
@@ -537,6 +540,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        Log.d(TAG,"onStopcalled");
+        UserIdPresent.removeEventListener(valueEventListener);
+
 
     }
 }

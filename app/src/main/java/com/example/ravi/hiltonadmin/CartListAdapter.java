@@ -14,6 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.zip.Inflater;
 
@@ -43,7 +47,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
 
         Items item=CartList.get(position);
 
@@ -85,9 +89,14 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
             }
         });
 
+        //button funtionality to remove Item
         holder.bRemove1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("UserData/"+ FirebaseAuth.getInstance().getCurrentUser().getUid()+"/Cart/"+CartList.get(holder.getAdapterPosition()).getItemId());
+                    databaseReference.removeValue();
+                    CartList.remove(holder.getAdapterPosition());
+                    notifyItemRemoved(holder.getAdapterPosition());
 
             }
         });
@@ -99,6 +108,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
     public int getItemCount() {
 
         return CartList.size();
+
     }
 
     class ViewHolder extends RecyclerView.ViewHolder

@@ -194,9 +194,16 @@ public class CartFragment extends Fragment {
         mListener = null;
         Log.d(TAG,"Cart Fragment on Detach called");
 
-        //removing value event listner so that they does not create problem
-        ItemData.removeEventListener(value);
-        databaseReference.removeEventListener(value1);
+        if(ItemData!=null)
+        {
+            //removing value event listner so that they does not create problem
+            ItemData.removeEventListener(value);
+
+
+        }
+
+        if(databaseReference!=null)
+            databaseReference.removeEventListener(value1);
 
     }
 
