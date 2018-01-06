@@ -20,4 +20,10 @@
         android:gravity="center_horizontal"
         android:layout_gravity="center_horizontal"></LinearLayout>
 
+    <Button
+        android:text="Sign Out"
+        android:id="@+id/bSignout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

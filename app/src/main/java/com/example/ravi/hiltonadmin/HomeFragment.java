@@ -2,6 +2,7 @@ package com.example.ravi.hiltonadmin;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.nfc.Tag;
 import android.os.Bundle;
@@ -11,9 +12,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -38,6 +43,7 @@ public class HomeFragment extends Fragment {
     private LinearLayout lSliderdots;
     private int dotcount;
     private ImageView[] dots;
+    private Button bSignout;
 
     private static final String TAG="PhoneAuthActivity";
 
@@ -101,7 +107,7 @@ public class HomeFragment extends Fragment {
 
         ViewPager=(ViewPager)view.findViewById(R.id.vImageSlider);//image slider viewpager
         lSliderdots=(LinearLayout)view.findViewById(R.id.lSliderDots); //dots below it
-
+        bSignout=(Button)view.findViewById(R.id.bSignout);
 
         /******************For Image Slider Present at the Home Page***/
 
@@ -157,6 +163,16 @@ public class HomeFragment extends Fragment {
         /***********************************************************/
 
 
+
+        bSignout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                Intent i=new Intent(getActivity(),MainActivity.class);
+                startActivity(i);
+                getActivity().finish(); //to finish this activity
+            }
+        });
 
         return view;
 
@@ -240,6 +256,9 @@ public class HomeFragment extends Fragment {
     }
 
     /*******************************************************/
+
+
 }
+
 
 

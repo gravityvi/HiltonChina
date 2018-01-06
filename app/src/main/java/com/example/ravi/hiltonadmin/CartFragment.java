@@ -96,7 +96,7 @@ public class CartFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                final long NumberOfItems=dataSnapshot.getChildrenCount();
+                final long NumberOfItems=dataSnapshot.child("Cart").getChildrenCount();
                 for(DataSnapshot data: dataSnapshot.child("Cart").getChildren())
                 {
                     final String ItemId= data.getKey();//getting Item Key

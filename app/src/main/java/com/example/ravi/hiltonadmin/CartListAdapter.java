@@ -85,11 +85,19 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
             }
         });
 
+        holder.bRemove1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
 
     }
 
     @Override
     public int getItemCount() {
+
         return CartList.size();
     }
 
