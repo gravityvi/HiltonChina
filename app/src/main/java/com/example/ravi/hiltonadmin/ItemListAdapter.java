@@ -26,6 +26,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+
+
 /**
  * Created by ravi on 29-12-2017.
  */
@@ -57,7 +59,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Items item= arrayList.get(position);//Item with the index position in arrayList
 
 
@@ -70,6 +72,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
         //Setting ItemImage
         Bitmap bmp= BitmapFactory.decodeByteArray(item.getImage(),0,item.getImage().length);
         holder.iItemImage.setImageBitmap(bmp);
+
 
 
 
@@ -95,6 +98,8 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
                 {
                     a--;
                     holder.tItemNumber.setText(Integer.toString(a));
+
+
                 }
 
 
@@ -131,6 +136,8 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
         return arrayList.size();
     }
 
+
+
     class ViewHolder extends RecyclerView.ViewHolder
     {
         Button bIncrease;
@@ -142,6 +149,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
         TextView tItemName;
         TextView tItemPrice;
         Button bAddToCart;
+
 
         public ViewHolder(View itemView) {
             super(itemView);

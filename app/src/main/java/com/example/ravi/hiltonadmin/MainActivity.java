@@ -13,7 +13,10 @@ import android.text.Editable;
 import android.text.LoginFilter;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -45,9 +48,10 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference myRef;
 
-    
+    private int everify_status=0;
+    private int ephone_status=0;
     private Button bVerify;
-    private Button bResend;
+    private TextView tResend;
     private EditText eVerifyCode;
     private TextView tRegisterStatus;
     private EditText ephone;
@@ -76,7 +80,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        setContentView(R.layout.sign_in);
 
 
 
@@ -90,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
         database =FirebaseDatabase.getInstance();
         myRef = database.getReference("UserData");
-         bResend=(Button)findViewById(R.id.bResend);
+         tResend=(TextView) findViewById(R.id.tResend);
         bVerify=(Button)findViewById(R.id.bVerify);
         eVerifyCode=(EditText)findViewById(R.id.eVerifycode);
         ephone=(EditText)findViewById(R.id.ephone);
@@ -101,7 +109,28 @@ public class MainActivity extends AppCompatActivity {
         firebaseAuth= FirebaseAuth.getInstance();
         tRegisterStatus=(TextView)findViewById(R.id.tRegisterStatus);
 
+        ephone.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                activeEphone();
+                if(everify_status==1)
+                    enableEverify();
 
+                return false;
+            }
+        });
+
+
+        eVerifyCode.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                activeEverify();
+                if(ephone_status==1)
+                    enableEphone();
+
+                return false;
+            }
+        });
 
 
 
@@ -243,6 +272,7 @@ public class MainActivity extends AppCompatActivity {
     {
         Log.d(TAG,"Resend Verification called");
         PhoneAuthProvider.getInstance().verifyPhoneNumber(PhoneNumber,60,TimeUnit.SECONDS,this,mcallsbacks,token);
+        tRegisterStatus.setText("Code has been Resend wait for few minutes to appear");
     }
 
 
@@ -349,8 +379,11 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG,"State Initialized");
                 tRegisterStatus.setText("Welcome User");
                 enableViews(bsignup,ephone);
-                disableViews(bVerify,bResend,eVerifyCode);
+                enableEphone();
 
+                disableViews(bVerify,tResend,eVerifyCode);
+                disableEverify();
+                disableResend();
 
                 //Intent i=new Intent(MainActivity.this,);
 
@@ -362,8 +395,13 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG,"State Code Sent");
 
                 tRegisterStatus.setText("Code has been sent please enter the received code under the space provided\n In Case of you have entered wrong phone number change it and press resend");
-                enableViews(bVerify,bResend,ephone,eVerifyCode);
+                enableViews(bVerify,tResend,ephone,eVerifyCode);
+                enableEphone();
+                enableEverify();
+                enableResend();
                 disableViews(bsignup);
+
+
 
 
                 break;
@@ -374,8 +412,11 @@ public class MainActivity extends AppCompatActivity {
                 //verification failed
                 tRegisterStatus.setText("oops something went wrong");
                 enableViews(ephone,bsignup);
-                disableViews(eVerifyCode,bVerify,bResend);
-                setContentView(R.layout.activity_main);
+                enableEphone();
+                disableViews(eVerifyCode,bVerify,tResend);
+                disableResend();
+                disableEverify();
+
 
 
                 break;
@@ -386,7 +427,10 @@ public class MainActivity extends AppCompatActivity {
 
                 tRegisterStatus.setText("Verification Complete");
                 //verification has suceeded, proceed to firebase sign in
-                disableViews(eVerifyCode,ephone,bResend,bVerify,bsignup);
+                disableViews(eVerifyCode,ephone,tResend,bVerify,bsignup);
+                disableEverify();
+                disableResend();
+                disableEphone();
                 if(cred!=null) {
                     if (cred.getSmsCode() != null) {
                         //codefield set text to sms code
@@ -417,7 +461,10 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG,"state signin success");
 
                 tRegisterStatus.setText("Signed In Succesfully");
-                disableViews(ephone,bVerify,bsignup,eVerifyCode,bResend);
+                disableViews(ephone,bVerify,bsignup,eVerifyCode,tResend);
+                disableResend();
+                disableEverify();
+                disableEphone();
                 UserIdPresent=myRef.orderByKey().equalTo(user.getUid());
                 valueEventListener=new ValueEventListener() {
                     @Override
@@ -441,7 +488,7 @@ public class MainActivity extends AppCompatActivity {
                         tRegisterStatus.setText("Sign In Cancelled");
                     }
                 };
-                UserIdPresent.addValueEventListener(valueEventListener);
+                UserIdPresent.addListenerForSingleValueEvent(valueEventListener);
 
 
 
@@ -536,14 +583,59 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void disableEphone()
+    {
+        ephone_status=0;
+        ephone.setBackgroundResource(R.drawable.ephone_disabled1);
+        ephone.setHint(null);
+    }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d(TAG,"onStopcalled");
-        UserIdPresent.removeEventListener(valueEventListener);
+    public void enableEphone()
+    {
+        ephone_status=1;
+        ephone.setBackgroundResource(R.drawable.ephone_notactive1);
+        ephone.setHint(R.string.ephone_hint);
+        ephone.setHintTextColor(getResources().getColor(R.color.enon_active_hint));
+    }
 
+    public void disableEverify()
+    {
+        everify_status=0;
+        eVerifyCode.setBackgroundResource(R.drawable.everify_disabled1);
+        eVerifyCode.setHint(null);
+        eVerifyCode.setHintTextColor(getResources().getColor(R.color.edisabled_hint));
+    }
 
+    public void enableEverify()
+    {
+        everify_status=1;
+        eVerifyCode.setBackgroundResource(R.drawable.everify_notactive1);
+        eVerifyCode.setHint(R.string.everify_hint);
+        eVerifyCode.setHintTextColor(getResources().getColor(R.color.enon_active_hint));
+    }
+
+    public void activeEphone()
+    {
+        ephone.setBackgroundResource(R.drawable.ephone_active1);
+        ephone.setHintTextColor(getResources().getColor(R.color.enon_active_hint));
+    }
+
+    public void activeEverify()
+    {
+        eVerifyCode.setBackgroundResource(R.drawable.everify_active1);
+        eVerifyCode.setHintTextColor(getResources().getColor(R.color.enon_active_hint));
+    }
+
+    public void enableResend()
+    {
+        tResend.setTextColor(getResources().getColor(R.color.enon_active_hint));
+        tResend.setText("Resend Code ?");
+    }
+
+    public void disableResend()
+    {
+        tResend.setText(null);
+        tResend.setTextColor(getResources().getColor(R.color.edisabled_hint));
     }
 }
 

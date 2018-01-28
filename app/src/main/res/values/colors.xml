@@ -3,4 +3,6 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="enon_active_hint">#CDD4D9</color>
+    <color name="edisabled_hint">#ECF0F3</color>
 </resources>

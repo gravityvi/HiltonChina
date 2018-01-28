@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="10dp"
+    android:background="@drawable/sign_in_background">
+
+    <ImageView
+        android:id="@+id/iTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ravi"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iTitle"
+        android:textSize="18dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="SIGN IN"
+        android:textColor="#000"
+        android:textStyle="bold" />
+
+    <EditText
+
+        android:inputType="phone"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:textColorHint="#ECF0F3"
+        android:paddingLeft="100dp"
+        android:paddingStart="100dp"
+        android:hint="Phone Number"
+        android:background="@drawable/ephone_disabled1"
+        android:id="@+id/ephone"
+        android:textColorHighlight="#FC0100"
+        android:layout_below="@+id/iTitle"
+        android:layout_marginTop="70dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+
+        android:inputType="number"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:textColorHint="#ECF0F3"
+        android:paddingStart="100dp"
+        android:paddingLeft="100dp"
+        android:hint="Verify Code"
+        android:background="@drawable/everify_disabled1"
+        android:layout_marginTop="40dp"
+        android:id="@+id/eVerifycode"
+        android:layout_below="@+id/ephone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+
+        android:onClick="Resend"
+        android:id="@+id/tResend"
+        android:textColor="#ECF0F3"
+        android:layout_marginTop="10dp"
+        android:text="Resend Code"
+        android:layout_marginRight="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/eVerifycode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:textSize="18dp"
+        android:text="Welccome We are Pleased to See you"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/tResend"
+        android:id="@+id/tRegisterStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/bVerify"
+            android:background="@drawable/bverify"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="Verify"/>
+
+
+        <Button
+            android:onClick="signup"
+            android:id="@+id/bsignup"
+            android:background="@drawable/bsignin"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+
+
+
+
+
+</RelativeLayout>
+
+

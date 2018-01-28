@@ -113,7 +113,7 @@
 
             <Button
                 android:elevation="10dp"
-                android:background="#ff0000"
+                android:background="#00E676"
                 android:layout_weight="1"
                 android:id="@+id/bRemove1"
                 android:layout_width="match_parent"

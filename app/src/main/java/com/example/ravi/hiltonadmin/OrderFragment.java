@@ -89,7 +89,7 @@ public class OrderFragment extends Fragment {
 
          arrayList=new ArrayList<String>(); // arraylist for adding all categories
          DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("ItemData");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot data:dataSnapshot.getChildren())

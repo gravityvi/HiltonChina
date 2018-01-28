@@ -94,7 +94,7 @@ public class CategoriesListAdapter extends RecyclerView.Adapter<CategoriesListAd
 
                 //getting values from database of prticular category choosen
                final ArrayList<Items> ItemList=new ArrayList<>();
-                databaseReference.child(holder.CategoriesRowTitle.getText().toString()).addValueEventListener(new ValueEventListener() {
+                databaseReference.child(holder.CategoriesRowTitle.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(final DataSnapshot dataSnapshot) {
                         Count=0;
@@ -125,7 +125,7 @@ public class CategoriesListAdapter extends RecyclerView.Adapter<CategoriesListAd
                                     ItemList.add(item);//adding item
                                     Count++;
                                     if(Count==dataSnapshot.getChildrenCount())//Things to be performed only at the end
-                                         {
+                                    {
                                         //replacing fragment with Items of a Particular Category
 
                                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

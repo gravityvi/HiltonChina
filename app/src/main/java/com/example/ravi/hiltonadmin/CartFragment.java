@@ -1,7 +1,9 @@
 package com.example.ravi.hiltonadmin;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -11,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,15 +48,42 @@ public class CartFragment extends Fragment {
     private String mParam2;
     private int Count=0;
     private DatabaseReference ItemData;
+    private static int  TotalCost=0;
+    private static int  TotalItem=0;
     private OnFragmentInteractionListener mListener;
     private RecyclerView recyclerView;
     private DatabaseReference databaseReference;
-    private ArrayList<Items> CartItems;
+    private  ArrayList<Items> CartItems;
     private static final String TAG="PhoneAuthActivity";
     private CartListAdapter cartListAdapter;
     private ValueEventListener value;
     private ValueEventListener value1;
+    private static TextView  tTotalCost;
 
+
+
+
+
+    //functionality to update TextView and Cost in the case of increase or decrease items in the cart or in removal of item
+    public static void   UpdateCostView(int ItemSubract,int CostSubract,boolean Todo)
+    {
+
+
+        if(Todo)
+        {
+
+            TotalCost+=CostSubract;
+            TotalItem+=ItemSubract;
+        }
+        else
+        {
+
+            TotalCost-=CostSubract;
+            TotalItem-=ItemSubract;
+        }
+        tTotalCost.setText("Total Cost("+TotalItem+" Items) : "+TotalCost );
+
+    }
 
     public CartFragment() {
         // Required empty public constructor
@@ -86,9 +116,12 @@ public class CartFragment extends Fragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_cart, container, false);
 
+        tTotalCost=(TextView)view.findViewById(R.id.tTotalCost);
         recyclerView=view.findViewById(R.id.rCartView);
         CartItems=new ArrayList<>();//creating Arraylist of type Items to add Cart Items in database into this array
+        CartItems.clear();
         cartListAdapter=new CartListAdapter(getContext(),CartItems);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();//getting the current User
         databaseReference= FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid());//going in User profile to read Cart data
@@ -126,10 +159,20 @@ public class CartFragment extends Fragment {
                                 public void onSuccess(byte[] bytes) {
                                     Count++;
                                     CartItems.add(new Items(ItemId,bytes,ItemName,ItemCategory,ItemNumber,ItemDescription,ItemPrice));
+                                    TotalCost +=Integer.parseInt(ItemNumber)*Integer.parseInt(ItemPrice);
+                                    TotalItem +=Integer.parseInt(ItemNumber);
 
-                                    if(Count==NumberOfItems)//Things to be Performed only once
+
+                                    if(Count==NumberOfItems)//Things to be Performed only once and at last
+
+                                    {
                                         recyclerView.setAdapter(cartListAdapter);
+                                        tTotalCost.setText("Total Cost("+TotalItem+" Items) : "+TotalCost );
 
+
+
+                                        
+                                    }
 
 
 
@@ -143,7 +186,7 @@ public class CartFragment extends Fragment {
 
                         }
                     };
-                    ItemData.addValueEventListener(value);
+                    ItemData.addListenerForSingleValueEvent(value);
 
 
 
@@ -163,7 +206,7 @@ public class CartFragment extends Fragment {
 
             }
         };
-        databaseReference.addValueEventListener(value1);
+        databaseReference.addListenerForSingleValueEvent(value1);
 
 
 
@@ -194,16 +237,7 @@ public class CartFragment extends Fragment {
         mListener = null;
         Log.d(TAG,"Cart Fragment on Detach called");
 
-        if(ItemData!=null)
-        {
-            //removing value event listner so that they does not create problem
-            ItemData.removeEventListener(value);
 
-
-        }
-
-        if(databaseReference!=null)
-            databaseReference.removeEventListener(value1);
 
     }
 
@@ -221,4 +255,6 @@ public class CartFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
 }
