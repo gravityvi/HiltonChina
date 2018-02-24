@@ -8,6 +8,7 @@
     <!-- TODO: Update blank fragment layout -->
     <android.support.v4.view.ViewPager
         android:id="@+id/vImageSlider"
+        android:animateLayoutChanges="true"
         android:layout_width="match_parent"
         android:layout_height="200dp"></android.support.v4.view.ViewPager>
 
@@ -25,5 +26,85 @@
         android:id="@+id/bSignout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+
+
+    <LinearLayout
+        android:background="@drawable/carview"
+        android:orientation="horizontal"
+        android:id="@+id/lMakarpuraCenter"
+        android:layout_marginTop="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="130dp">
+
+        <ImageView
+            android:src="@drawable/center_image"
+            android:layout_margin="15dp"
+            android:layout_weight="2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_margin="15dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+
+                android:textColor="#000"
+                android:textSize="16dp"
+                android:layout_margin="10dp"
+                android:text="Makarpura Center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:text="Address\n Contact  detalis:"
+                android:layout_margin="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:background="@drawable/carview"
+        android:orientation="horizontal"
+        android:id="@+id/WarasiyaCenter"
+        android:layout_marginTop="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="130dp">
+
+        <ImageView
+            android:src="@drawable/center_image"
+            android:layout_margin="15dp"
+            android:layout_weight="2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_margin="15dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+
+                android:textColor="#000"
+                android:textSize="16dp"
+                android:layout_margin="10dp"
+                android:text="Alkapuri Center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:text="Address\n Contact  detalis:"
+                android:layout_margin="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

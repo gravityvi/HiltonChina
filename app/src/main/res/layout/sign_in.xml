@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="10dp"
     android:background="@drawable/sign_in_background">
@@ -70,13 +72,13 @@
 
 
     <TextView
-        android:textSize="18dp"
-        android:text="Welccome We are Pleased to See you"
-        android:layout_marginTop="40dp"
-        android:layout_below="@+id/tResend"
         android:id="@+id/tRegisterStatus"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tResend"
+        android:layout_marginTop="40dp"
+        android:text="Welccome We are Pleased to See you"
+        android:textSize="18dp" />
 
 
     <LinearLayout

@@ -122,6 +122,8 @@ public class CartFragment extends Fragment {
         CartItems.clear();
         cartListAdapter=new CartListAdapter(getContext(),CartItems);
 
+        /*****Reading cart items and setting up recycler view ***/
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();//getting the current User
         databaseReference= FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid());//going in User profile to read Cart data
@@ -187,6 +189,8 @@ public class CartFragment extends Fragment {
                         }
                     };
                     ItemData.addListenerForSingleValueEvent(value);
+
+                    /*****************************************************************************/
 
 
 

@@ -1,6 +1,7 @@
 package com.example.ravi.hiltonadmin;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.graphics.Color;
@@ -75,22 +76,19 @@ public class CategoriesListAdapter extends RecyclerView.Adapter<CategoriesListAd
 
 
         /************************adding different colours to rows*********************/
-        if(position%2==0) {
-            holder.CategoriesRowTitle.setText(arrayList.get(position));
-            holder.linearLayout.setBackgroundColor(Color.parseColor("#C5CAE9"));
-
-        }
-        else
-        {
-            holder.CategoriesRowTitle.setText(arrayList.get(position));
-            holder.linearLayout.setBackgroundColor(Color.parseColor("#3F51B5"));
-        }
+        holder.CategoriesRowTitle.setText(arrayList.get(position));
 /**************************************************************************************/
 
 /**********Setting OnClcikListner for Every Row****************************************/
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                final ProgressDialog progressDialog=new ProgressDialog(context);
+                progressDialog.setTitle("Loading");
+                progressDialog.setMessage("getting your favourite dishes ready");
+                progressDialog.setCancelable(false);
+                progressDialog.show();
 
                 //getting values from database of prticular category choosen
                final ArrayList<Items> ItemList=new ArrayList<>();
@@ -129,8 +127,9 @@ public class CategoriesListAdapter extends RecyclerView.Adapter<CategoriesListAd
                                         //replacing fragment with Items of a Particular Category
 
                                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                        fragmentTransaction.addToBackStack("Categories");//adding Categories to the backstack
+
                                         fragmentTransaction.replace(R.id.lFragmentContent, ItemsFragment.newInstance(ItemList)).commit();
+                                        progressDialog.cancel();
                                     }
 
                                 }
