@@ -154,13 +154,12 @@ public class CartFragment extends Fragment {
 
 
                             //getting Image File From url of Database--
-                            String ImageUrl= dataSnapshot.child("Image").getValue(String.class);
-                            StorageReference storageReference= FirebaseStorage.getInstance().getReferenceFromUrl(ImageUrl);
-                            storageReference.getBytes(1024*1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                @Override
-                                public void onSuccess(byte[] bytes) {
+                            final String ImageUrl= dataSnapshot.child("Image").getValue(String.class);
+
+
+
                                     Count++;
-                                    CartItems.add(new Items(ItemId,bytes,ItemName,ItemCategory,ItemNumber,ItemDescription,ItemPrice));
+                                    CartItems.add(new Items(ItemId,ItemName,ItemCategory,ItemNumber,ItemDescription,ItemPrice,ImageUrl));
                                     TotalCost +=Integer.parseInt(ItemNumber)*Integer.parseInt(ItemPrice);
                                     TotalItem +=Integer.parseInt(ItemNumber);
 
@@ -178,8 +177,8 @@ public class CartFragment extends Fragment {
 
 
 
-                                }
-                            });
+
+
 
                         }
 

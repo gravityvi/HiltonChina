@@ -111,15 +111,13 @@ public class CategoriesListAdapter extends RecyclerView.Adapter<CategoriesListAd
 
 
                             //getting Image File From url of Database
-                            String ImgeUrl= data.child("Image").getValue(String.class);
-                            StorageReference storageReference=storage.getReferenceFromUrl(ImgeUrl);
-                            storageReference.getBytes(1024*1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                @Override
-                                public void onSuccess(byte[] bytes) {
+                            final String ImgeUrl= data.child("Image").getValue(String.class);
+
+
 
                                     //Creating Fragment for selected row and adding Categories Items to the arraylist and passing to the ItemsFragment
 
-                                    Items item=new Items(ItemId,bytes,ItemName,ItemCategory,ItemNumber,Desc,ItemPrice);//Items class contain all field needed
+                                    Items item=new Items(ItemId,ItemName,ItemCategory,ItemNumber,Desc,ItemPrice,ImgeUrl);//Items class contain all field needed
                                     ItemList.add(item);//adding item
                                     Count++;
                                     if(Count==dataSnapshot.getChildrenCount())//Things to be performed only at the end
@@ -131,12 +129,6 @@ public class CategoriesListAdapter extends RecyclerView.Adapter<CategoriesListAd
                                         fragmentTransaction.replace(R.id.lFragmentContent, ItemsFragment.newInstance(ItemList)).commit();
                                         progressDialog.cancel();
                                     }
-
-                                }
-                            });
-
-
-
 
 
                         }

@@ -68,7 +68,8 @@ public class UserInfo extends AppCompatActivity {
             UserdataRef.child(String_UserId).child(EMAIL).setValue(String_Email);
             UserdataRef.child(String_UserId).child(PHONE).setValue(String_Phone);
 
-
+            Intent i=new Intent(this,Home.class);
+            startActivity(i);//starting home activity
             finish();
 
 

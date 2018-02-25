@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,9 +61,13 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
         holder.tItemPrice1.setText("PRICE: "+item.getItemPrice());//Setting ItemPrice
         holder.tDesc1.setText(item.getItemDescription());//Setting Item Description
         //Setting Item Image
-        Bitmap bmp= BitmapFactory.decodeByteArray(item.getImage(),0,item.getImage().length);
-        holder.iItemImage1.setImageBitmap(bmp);
-
+        if(item.getImageUrl()==null)
+        {
+            holder.iItemImage1.setImageResource(R.drawable.ravi);
+        }
+        else {
+            Picasso.with(context).load(item.getImageUrl()).into(holder.iItemImage1);
+        }
        //functionality to increase ItemNumber
         holder.bIncrease1.setOnClickListener(new View.OnClickListener() {
 

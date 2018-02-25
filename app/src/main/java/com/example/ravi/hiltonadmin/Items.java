@@ -11,6 +11,7 @@ import android.os.Parcelable;
 
 public class Items implements Parcelable{
 
+    private String ImageUrl;
     private byte[] Image;
     private String ItemName;
     private String ItemCategory;
@@ -61,10 +62,10 @@ public class Items implements Parcelable{
 
     /**********************************************************************/
 
-    Items(String ItemId,byte[] Image, String ItemName,String ItemCategory,String ItemNumber, String ItemDescription, String ItemPrice)
+    Items(String ItemId, String ItemName,String ItemCategory,String ItemNumber, String ItemDescription, String ItemPrice,String ImageUrl)
     {
+        this.ImageUrl=ImageUrl;
         this.ItemId=ItemId;
-        this.Image=Image;
         this.ItemName=ItemName;
         this.ItemCategory=ItemCategory;
         this.ItemDescription=ItemDescription;
@@ -83,8 +84,7 @@ public class Items implements Parcelable{
         this.ItemNumber=in.readString();
         this.ItemPrice=in.readString();
         this.ItemDescription=in.readString();
-        Image=new byte[in.readInt()];
-        in.readByteArray(Image);
+        this.ImageUrl=in.readString();
     }
 
     @Override
@@ -100,9 +100,7 @@ public class Items implements Parcelable{
         parcel.writeString(ItemNumber);
         parcel.writeString(ItemPrice);
         parcel.writeString(ItemDescription);
-        parcel.writeInt(Image.length);
-        parcel.writeInt(Image.length);
-        parcel.writeByteArray(Image);
+        parcel.writeString(ImageUrl);
     }
 
    public final Parcelable.Creator<Items> CREATOR=new Parcelable.Creator<Items>()
@@ -120,5 +118,11 @@ public class Items implements Parcelable{
     };
 
 
+    public String getImageUrl() {
+        return ImageUrl;
+    }
 
+    public void setImageUrl(String imageUrl) {
+        ImageUrl = imageUrl;
+    }
 }

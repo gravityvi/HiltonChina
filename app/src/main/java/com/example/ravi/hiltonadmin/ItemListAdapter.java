@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -70,8 +71,10 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
         holder.tItemPrice.setText("PRICE: "+item.getItemPrice());//Setting ItemPrice
         holder.tDesc.setText(item.getItemDescription());//Setting ItemDescription
         //Setting ItemImage
-        Bitmap bmp= BitmapFactory.decodeByteArray(item.getImage(),0,item.getImage().length);
-        holder.iItemImage.setImageBitmap(bmp);
+        /*Bitmap bmp= BitmapFactory.decodeByteArray(item.getImage(),0,item.getImage().length);
+        holder.iItemImage.setImageBitmap(bmp);*/
+
+        Picasso.with(context).load(item.getImageUrl()).placeholder(R.drawable.ravi).into(holder.iItemImage);
 
 
 
