@@ -48,8 +48,6 @@ public class CartFragment extends Fragment {
     private String mParam2;
     private int Count=0;
     private DatabaseReference ItemData;
-    private static int  TotalCost=0;
-    private static int  TotalItem=0;
     private OnFragmentInteractionListener mListener;
     private RecyclerView recyclerView;
     private DatabaseReference databaseReference;
@@ -59,31 +57,14 @@ public class CartFragment extends Fragment {
     private ValueEventListener value;
     private ValueEventListener value1;
     private static TextView  tTotalCost;
+    private static int checkoutSum=0;
+    private static int totalItems=0;
 
 
 
 
 
-    //functionality to update TextView and Cost in the case of increase or decrease items in the cart or in removal of item
-    public static void   UpdateCostView(int ItemSubract,int CostSubract,boolean Todo)
-    {
 
-
-        if(Todo)
-        {
-
-            TotalCost+=CostSubract;
-            TotalItem+=ItemSubract;
-        }
-        else
-        {
-
-            TotalCost-=CostSubract;
-            TotalItem-=ItemSubract;
-        }
-        tTotalCost.setText("Total Cost("+TotalItem+" Items) : "+TotalCost );
-
-    }
 
     public CartFragment() {
         // Required empty public constructor
@@ -120,19 +101,21 @@ public class CartFragment extends Fragment {
         recyclerView=view.findViewById(R.id.rCartView);
         CartItems=new ArrayList<>();//creating Arraylist of type Items to add Cart Items in database into this array
         CartItems.clear();
-        cartListAdapter=new CartListAdapter(getContext(),CartItems);
+
 
         /*****Reading cart items and setting up recycler view ***/
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();//getting the current User
+       final FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();//getting the current User
         databaseReference= FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid());//going in User profile to read Cart data
+        checkoutSum=0;
+        totalItems=0;
         value1=new ValueEventListener(){
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                final long NumberOfItems=dataSnapshot.child("Cart").getChildrenCount();
-                for(DataSnapshot data: dataSnapshot.child("Cart").getChildren())
+                final long NumberOfItems=dataSnapshot.child("Cart").child("Items").getChildrenCount();
+                for(DataSnapshot data: (dataSnapshot.child("Cart").child("Items").getChildren()))
                 {
                     final String ItemId= data.getKey();//getting Item Key
                     final String ItemCategory=data.child("ItemCategory").getValue(String.class);//getting Item Category
@@ -141,7 +124,7 @@ public class CartFragment extends Fragment {
 
 
 
-
+                    System.out.println(ItemCategory+" "+ItemId);
                     ItemData=FirebaseDatabase.getInstance().getReference("ItemData").child(ItemCategory).child(ItemId);//going directly to Item to retrive ItemData
 
                     value=new ValueEventListener()
@@ -160,15 +143,16 @@ public class CartFragment extends Fragment {
 
                                     Count++;
                                     CartItems.add(new Items(ItemId,ItemName,ItemCategory,ItemNumber,ItemDescription,ItemPrice,ImageUrl));
-                                    TotalCost +=Integer.parseInt(ItemNumber)*Integer.parseInt(ItemPrice);
-                                    TotalItem +=Integer.parseInt(ItemNumber);
-
+                                    totalItems+=Integer.parseInt(ItemNumber);
+                                    checkoutSum+=Integer.parseInt(ItemNumber)*Integer.parseInt(ItemPrice);
 
                                     if(Count==NumberOfItems)//Things to be Performed only once and at last
 
                                     {
+                                        cartListAdapter=new CartListAdapter(getContext(),CartItems);
                                         recyclerView.setAdapter(cartListAdapter);
-                                        tTotalCost.setText("Total Cost("+TotalItem+" Items) : "+TotalCost );
+                                        FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart").child("CheckoutSum").setValue(Integer.toString(checkoutSum));
+                                        FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart").child("TotalItems").setValue(Integer.toString(totalItems));
 
 
 
@@ -210,6 +194,23 @@ public class CartFragment extends Fragment {
             }
         };
         databaseReference.addListenerForSingleValueEvent(value1);
+
+
+        FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int totalItems=Integer.parseInt(dataSnapshot.child("TotalItems").getValue(String.class));
+                int checkoutSum=Integer.parseInt(dataSnapshot.child("CheckoutSum").getValue(String.class));
+
+                tTotalCost.setText("Total Cost("+totalItems+" Items) : "+checkoutSum );
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
 
 

@@ -1,6 +1,7 @@
 package com.example.ravi.hiltonadmin;
 
 import android.content.Context;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.nfc.Tag;
@@ -17,8 +18,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -35,6 +40,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
     private List<Items> CartList;
     private LayoutInflater inflater;
     private static final String TAG="PhoneAuthActivity";
+    private static final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
 
     public CartListAdapter(Context context, List<Items> CartList)
@@ -66,8 +72,12 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
             holder.iItemImage1.setImageResource(R.drawable.ravi);
         }
         else {
-            Picasso.with(context).load(item.getImageUrl()).into(holder.iItemImage1);
+            Picasso.with(context).load(item.getImageUrl()).placeholder(R.drawable.ravi).into(holder.iItemImage1);
         }
+
+
+
+
        //functionality to increase ItemNumber
         holder.bIncrease1.setOnClickListener(new View.OnClickListener() {
 
@@ -75,10 +85,36 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
             public void onClick(View view) {
                 int a=Integer.parseInt(holder.tItemNumber1.getText().toString()); // getting ItemNumber
                 a++;
-                CartFragment.UpdateCostView( 1,Integer.parseInt(item.getItemPrice()),true);
-                holder.tItemNumber1.setText(Integer.toString(a));
+                item.setItemNumber(Integer.toString(a));
+                FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart/Items/"+item.getItemId()+"/ItemNumber").setValue(Integer.toString(a));
+
+
+
+                FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                       int TotalItems = Integer.parseInt(dataSnapshot.child("TotalItems").getValue(String.class));
+                       TotalItems += 1;
+
+                       int CheckoutSum = Integer.parseInt(dataSnapshot.child("CheckoutSum").getValue(String.class));
+                       CheckoutSum += Integer.parseInt(item.getItemPrice());
+                        FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart").child("TotalItems").setValue(Integer.toString(TotalItems));
+                        FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart").child("CheckoutSum").setValue(Integer.toString(CheckoutSum));
+                        holder.tItemNumber1.setText((item.getItemNumber()));
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
         });
+
+
+
+
+
 
         //functionality to decrease Item Number
         holder.bDecrease1.setOnClickListener(new View.OnClickListener() {
@@ -92,8 +128,31 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
                 else
                 {
                     a--;
-                    CartFragment.UpdateCostView( 1,Integer.parseInt(item.getItemPrice()),false);
-                    holder.tItemNumber1.setText(Integer.toString(a));
+                    item.setItemNumber(Integer.toString(a));
+                    FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart/Items/"+item.getItemId()+"/ItemNumber").setValue(Integer.toString(a));
+
+
+
+                    FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            int TotalItems = Integer.parseInt(dataSnapshot.child("TotalItems").getValue(String.class));
+                            TotalItems -= 1;
+
+                            int CheckoutSum = Integer.parseInt(dataSnapshot.child("CheckoutSum").getValue(String.class));
+                            CheckoutSum -= Integer.parseInt(item.getItemPrice());
+                            FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart").child("TotalItems").setValue(Integer.toString(TotalItems));
+                            FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart").child("CheckoutSum").setValue(Integer.toString(CheckoutSum));
+                            holder.tItemNumber1.setText((item.getItemNumber()));
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+
                 }
 
 
@@ -107,11 +166,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
 
     }
 
-    public  void  RemoveItem(Items item)
-    {
 
-
-    }
 
     @Override
     public int getItemCount() {
@@ -151,13 +206,28 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
 
         @Override
         public void onClick(View view) {
-            int position=getAdapterPosition();
-            DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("UserData/"+ FirebaseAuth.getInstance().getCurrentUser().getUid()+"/Cart/"+CartList.get(position).getItemId());
+            final int position=getAdapterPosition();
+            final DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("UserData/"+ FirebaseAuth.getInstance().getCurrentUser().getUid()+"/Cart/Items/"+CartList.get(position).getItemId());
             databaseReference.removeValue();
-            int ItemNumber=Integer.parseInt(tItemNumber1.getText().toString());
-            CartFragment.UpdateCostView(ItemNumber,ItemNumber*Integer.parseInt(CartList.get(position).getItemPrice()),false);
-            CartList.remove(position);
-            notifyItemRemoved(position);
+            FirebaseDatabase.getInstance().getReference("UserData/"+ FirebaseAuth.getInstance().getCurrentUser().getUid()+"/Cart").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    int totalItems = Integer.parseInt(dataSnapshot.child("TotalItems").getValue(String.class));
+                    totalItems -= Integer.parseInt(CartList.get(position).getItemNumber());
+                    int checkoutSum = Integer.parseInt(dataSnapshot.child("CheckoutSum").getValue(String.class));
+                    checkoutSum -= (Integer.parseInt(CartList.get(position).getItemPrice()) * Integer.parseInt(CartList.get(position).getItemNumber()));
+                    FirebaseDatabase.getInstance().getReference("UserData/"+ FirebaseAuth.getInstance().getCurrentUser().getUid()+"/Cart").child("TotalItems").setValue(Integer.toString(totalItems));
+                    FirebaseDatabase.getInstance().getReference("UserData/"+ FirebaseAuth.getInstance().getCurrentUser().getUid()+"/Cart").child("CheckoutSum").setValue(Integer.toString(checkoutSum));
+                    CartList.remove(position);
+                    notifyItemRemoved(position);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
 
 
         }

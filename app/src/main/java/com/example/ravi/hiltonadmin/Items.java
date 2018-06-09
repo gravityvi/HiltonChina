@@ -12,7 +12,6 @@ import android.os.Parcelable;
 public class Items implements Parcelable{
 
     private String ImageUrl;
-    private byte[] Image;
     private String ItemName;
     private String ItemCategory;
     private String ItemNumber;
@@ -41,10 +40,6 @@ public class Items implements Parcelable{
 
     public String getItemId() {
         return ItemId;
-    }
-
-    public byte[] getImage() {
-        return Image;
     }
 
     public String getItemName() {

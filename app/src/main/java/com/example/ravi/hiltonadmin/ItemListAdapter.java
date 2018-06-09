@@ -119,8 +119,8 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
                 String userUid=user.getUid();
 
                 //adding Selected Item Into database
-                databaseReference.child(userUid).child("Cart").child(item.getItemId()).child("ItemNumber").setValue(holder.tItemNumber.getText().toString());
-                databaseReference.child(userUid).child("Cart").child(item.getItemId()).child("ItemCategory").setValue(item.getItemCategory());
+                databaseReference.child(userUid).child("Cart").child("Items").child(item.getItemId()).child("ItemNumber").setValue(holder.tItemNumber.getText().toString());
+                databaseReference.child(userUid).child("Cart").child("Items").child(item.getItemId()).child("ItemCategory").setValue(item.getItemCategory());
 
                 Toast.makeText(context,"Item Added to Cart",Toast.LENGTH_LONG).show();
                 
