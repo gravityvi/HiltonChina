@@ -126,7 +126,7 @@ public class CategoriesListAdapter extends RecyclerView.Adapter<CategoriesListAd
 
                                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-                                        fragmentTransaction.replace(R.id.lFragmentContent, ItemsFragment.newInstance(ItemList)).commit();
+                                        fragmentTransaction.replace(R.id.lFragmentContent, ItemsFragment.newInstance(ItemList),"9").addToBackStack(null).commit();
                                         progressDialog.cancel();
                                     }
 

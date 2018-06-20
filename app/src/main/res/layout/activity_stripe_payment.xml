@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StripePayment">
+
+    <com.stripe.android.view.CardInputWidget
+
+        android:id="@+id/cardInputwidget"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></com.stripe.android.view.CardInputWidget>
+
+
+    <TextView
+        android:id="@+id/tText"
+        android:layout_below="@id/cardInputwidget"
+        android:text="Dummy test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:layout_margin="10dp"
+        android:layout_below="@+id/cardInputwidget"
+        android:id="@+id/bPay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <WebView
+        android:layout_below="@id/bPay"
+        android:id="@+id/webView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></WebView>
+</RelativeLayout>

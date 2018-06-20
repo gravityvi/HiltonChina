@@ -67,13 +67,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
         holder.tItemPrice1.setText("PRICE: "+item.getItemPrice());//Setting ItemPrice
         holder.tDesc1.setText(item.getItemDescription());//Setting Item Description
         //Setting Item Image
-        if(item.getImageUrl()==null)
-        {
-            holder.iItemImage1.setImageResource(R.drawable.ravi);
-        }
-        else {
-            Picasso.with(context).load(item.getImageUrl()).placeholder(R.drawable.ravi).into(holder.iItemImage1);
-        }
+        Picasso.with(context).load(item.getImageUrl()).placeholder(R.drawable.ravi).into(holder.iItemImage1);
 
 
 

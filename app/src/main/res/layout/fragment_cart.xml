@@ -31,6 +31,7 @@
          android:layout_width="match_parent"
          android:layout_height="match_parent" />
       <Button
+          android:id="@+id/bChekout"
           android:background="#FF6F00"
           android:text="CheckOut"
           android:layout_gravity="end"

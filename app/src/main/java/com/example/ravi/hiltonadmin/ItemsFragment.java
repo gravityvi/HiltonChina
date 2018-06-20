@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +36,7 @@ public class ItemsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private Toolbar toolbar;
     private RecyclerView recyclerView;
     private static final String TAG="PhoneAuthActivity";
     private OnFragmentInteractionListener mListener;
@@ -64,10 +67,12 @@ public class ItemsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
            this.arrayList = getArguments().getParcelableArrayList("ItemList");//got the arraylist of ItemData
 
         }
+
     }
 
     @Override
@@ -77,6 +82,12 @@ public class ItemsFragment extends Fragment {
 
         View view=inflater.inflate(R.layout.fragment_items, container, false);
         recyclerView=view.findViewById(R.id.rItemsList);
+        toolbar = view.findViewById(R.id.toolbar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        if(((AppCompatActivity)getActivity()).getSupportActionBar() != null)
+        {
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         ItemListAdapter adapter=new ItemListAdapter(getContext(),arrayList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -100,12 +111,16 @@ public class ItemsFragment extends Fragment {
         }
     }
 
+
+
     @Override
     public void onDetach() {
         super.onDetach();
         Log.d(TAG,"Items Fragment onDetach called");
         mListener = null;
     }
+
+
 
     /**
      * This interface must be implemented by activities that contain this

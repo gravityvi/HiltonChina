@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -47,8 +48,10 @@ public class CartFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private int Count=0;
+    private int amount;
     private DatabaseReference ItemData;
     private OnFragmentInteractionListener mListener;
+    private Button bCheckout;
     private RecyclerView recyclerView;
     private DatabaseReference databaseReference;
     private  ArrayList<Items> CartItems;
@@ -99,9 +102,19 @@ public class CartFragment extends Fragment {
 
         tTotalCost=(TextView)view.findViewById(R.id.tTotalCost);
         recyclerView=view.findViewById(R.id.rCartView);
+        bCheckout = view.findViewById(R.id.bChekout);
         CartItems=new ArrayList<>();//creating Arraylist of type Items to add Cart Items in database into this array
         CartItems.clear();
 
+
+        bCheckout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i =new Intent(getContext(),StripePayment.class);
+                i.putExtra("amount",amount);
+                startActivity(i);
+            }
+        });
 
         /*****Reading cart items and setting up recycler view ***/
 
@@ -201,6 +214,7 @@ public class CartFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int totalItems=Integer.parseInt(dataSnapshot.child("TotalItems").getValue(String.class));
                 int checkoutSum=Integer.parseInt(dataSnapshot.child("CheckoutSum").getValue(String.class));
+                amount = checkoutSum;
 
                 tTotalCost.setText("Total Cost("+totalItems+" Items) : "+checkoutSum );
             }
@@ -216,6 +230,7 @@ public class CartFragment extends Fragment {
 
         return view;
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
