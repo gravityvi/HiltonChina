@@ -98,7 +98,7 @@ public class Items implements Parcelable{
         parcel.writeString(ImageUrl);
     }
 
-   public final Parcelable.Creator<Items> CREATOR=new Parcelable.Creator<Items>()
+   public final static Parcelable.Creator<Items> CREATOR=new Parcelable.Creator<Items>()
     {
 
         @Override

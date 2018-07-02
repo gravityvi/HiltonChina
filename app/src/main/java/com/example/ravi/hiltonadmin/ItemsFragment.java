@@ -83,6 +83,7 @@ public class ItemsFragment extends Fragment {
         View view=inflater.inflate(R.layout.fragment_items, container, false);
         recyclerView=view.findViewById(R.id.rItemsList);
         toolbar = view.findViewById(R.id.toolbar);
+        toolbar.setTitle(arrayList.get(0).getItemCategory());
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         if(((AppCompatActivity)getActivity()).getSupportActionBar() != null)
         {

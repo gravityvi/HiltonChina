@@ -62,16 +62,16 @@ public class StripePayment extends AppCompatActivity {
 
                         @Override
                         public void onSuccess(final Token token) {
-                            System.out.println("helooooooooo " + token);
+
 
                             RequestQueue queue = Volley.newRequestQueue(StripePayment.this);
-                            String url = " http://0.0.0.0:5000";
+                            String url = "https://stripe-test222424.herokuapp.com/";
 
                             //Request a string response from provided url
                             StringRequest stringRequest = new StringRequest(Request.Method.POST, url,new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
-                                    textView.setText("Done");
+                                    textView.setText(response);
                                     webView.getSettings().setJavaScriptEnabled(true);
                                     webView.loadDataWithBaseURL("", response, "text/html", "UTF-8", "");
 
@@ -90,7 +90,7 @@ public class StripePayment extends AppCompatActivity {
                                     Map<String,String> params = new HashMap<String,String>();
                                     params.put("userId", FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
                                     params.put("amount",Integer.toString(amount));
-                                    params.put("token",token.toString());
+                                    params.put("token",token.getId());
                                     return params;
                                 }
 

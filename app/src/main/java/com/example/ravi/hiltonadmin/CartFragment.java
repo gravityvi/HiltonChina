@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -110,8 +110,9 @@ public class CartFragment extends Fragment {
         bCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i =new Intent(getContext(),StripePayment.class);
+                Intent i =new Intent(getContext(),MerchantActivity.class);
                 i.putExtra("amount",amount);
+                i.putExtra("CartItems",CartItems);
                 startActivity(i);
             }
         });
@@ -209,21 +210,26 @@ public class CartFragment extends Fragment {
         databaseReference.addListenerForSingleValueEvent(value1);
 
 
-        FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                int totalItems=Integer.parseInt(dataSnapshot.child("TotalItems").getValue(String.class));
-                int checkoutSum=Integer.parseInt(dataSnapshot.child("CheckoutSum").getValue(String.class));
-                amount = checkoutSum;
+        DatabaseReference reference=FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart");
+                reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.hasChild("TotalItems"))
+                    {
+                        int totalItems=Integer.parseInt(dataSnapshot.child("TotalItems").getValue(String.class));
+                        int checkoutSum=Integer.parseInt(dataSnapshot.child("CheckoutSum").getValue(String.class));
+                        amount = checkoutSum;
 
-                tTotalCost.setText("Total Cost("+totalItems+" Items) : "+checkoutSum );
-            }
+                        tTotalCost.setText("Total Cost("+totalItems+" Items) : "+checkoutSum );
+                    }
+                }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+
 
 
 
@@ -248,6 +254,7 @@ public class CartFragment extends Fragment {
             //on attach called
             Log.d(TAG,"Cart Fragment on Attach called ");
         }
+
     }
 
     @Override
@@ -255,6 +262,7 @@ public class CartFragment extends Fragment {
         super.onDetach();
         mListener = null;
         Log.d(TAG,"Cart Fragment on Detach called");
+
 
 
 

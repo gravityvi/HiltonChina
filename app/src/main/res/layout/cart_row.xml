@@ -79,6 +79,7 @@
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:textColor="#000"
+            android:textSize="22sp"
             android:text="Item Name"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
