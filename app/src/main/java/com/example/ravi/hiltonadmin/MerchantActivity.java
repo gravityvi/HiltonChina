@@ -144,6 +144,12 @@ public class MerchantActivity extends AppCompatActivity implements PaymentResult
         FirebaseDatabase.getInstance().getReference().child("Orders").child(orderId).child("Progress").setValue("InProcess");
         FirebaseDatabase.getInstance().getReference().child("Orders").child(orderId).child("Amount").setValue(amount);
         FirebaseDatabase.getInstance().getReference().child("Orders").child(orderId).child("Paid").setValue(Integer.toString(paid));
+        //pushing cart Items
+        for(int i=0 ;i <CartItems.size();i++)
+        {
+            FirebaseDatabase.getInstance().getReference("Orders/"+orderId).child("Items").child("ItemId").setValue(CartItems.get(i).getItemId());
+            FirebaseDatabase.getInstance().getReference("Orders/"+orderId).child("Items").child("ItemNumber").setValue(CartItems.get(i).getItemNumber());
+        }
 
     }
 
