@@ -139,7 +139,7 @@ public class CartFragment extends Fragment {
 
 
                     System.out.println(ItemCategory+" "+ItemId);
-                    ItemData=FirebaseDatabase.getInstance().getReference("ItemData").child(ItemCategory).child(ItemId);//going directly to Item to retrive ItemData
+                    ItemData=FirebaseDatabase.getInstance().getReference("ItemData").child(ItemCategory).child(ItemId);//go`
 
                     value=new ValueEventListener()
                     {
@@ -219,7 +219,6 @@ public class CartFragment extends Fragment {
                         int totalItems=Integer.parseInt(dataSnapshot.child("TotalItems").getValue(String.class));
                         int checkoutSum=Integer.parseInt(dataSnapshot.child("CheckoutSum").getValue(String.class));
                         amount = checkoutSum;
-
                         tTotalCost.setText("Total Cost("+totalItems+" Items) : "+checkoutSum );
                     }
                 }

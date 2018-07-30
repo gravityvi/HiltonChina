@@ -7,11 +7,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 import com.razorpay.Checkout;
@@ -44,12 +48,15 @@ public class MerchantActivity extends AppCompatActivity implements PaymentResult
 
     @Override
     public void onPaymentSuccess(String s) {
+        Toast.makeText(this,"String "+s,Toast.LENGTH_LONG);
         pushItems(amount,"cardPayment");
         ClearCart();
     }
 
     @Override
     public void onPaymentError(int i, String s) {
+
+
 
     }
 
@@ -134,8 +141,13 @@ public class MerchantActivity extends AppCompatActivity implements PaymentResult
         //pushing cart Items
         for(int i=0 ;i <CartItems.size();i++)
         {
-            FirebaseDatabase.getInstance().getReference("UserData/"+userId+"/Orders/"+orderId).child("Items").child("ItemId").setValue(CartItems.get(i).getItemId());
-            FirebaseDatabase.getInstance().getReference("UserData/"+userId+"/Orders/"+orderId).child("Items").child("ItemNumber").setValue(CartItems.get(i).getItemNumber());
+
+            FirebaseDatabase.getInstance().getReference("UserData/"+userId+"/Orders/"+orderId).child("Items").child(CartItems.get(i).getItemId()).child("ItemNumber").setValue(CartItems.get(i).getItemNumber());
+            FirebaseDatabase.getInstance().getReference("UserData/"+userId+"/Orders/"+orderId).child("Items").child(CartItems.get(i).getItemId()).child("ItemCategory").setValue(CartItems.get(i).getItemCategory());
+            FirebaseDatabase.getInstance().getReference("Orders/"+orderId).child("Items").child(CartItems.get(i).getItemId()).child("ItemNumber").setValue(CartItems.get(i).getItemNumber());
+            FirebaseDatabase.getInstance().getReference("Orders/"+orderId).child("Items").child(CartItems.get(i).getItemId()).child("ItemCategory").setValue(CartItems.get(i).getItemCategory());
+
+
         }
 
         //pushing Items to merchant data
@@ -144,12 +156,7 @@ public class MerchantActivity extends AppCompatActivity implements PaymentResult
         FirebaseDatabase.getInstance().getReference().child("Orders").child(orderId).child("Progress").setValue("InProcess");
         FirebaseDatabase.getInstance().getReference().child("Orders").child(orderId).child("Amount").setValue(amount);
         FirebaseDatabase.getInstance().getReference().child("Orders").child(orderId).child("Paid").setValue(Integer.toString(paid));
-        //pushing cart Items
-        for(int i=0 ;i <CartItems.size();i++)
-        {
-            FirebaseDatabase.getInstance().getReference("Orders/"+orderId).child("Items").child("ItemId").setValue(CartItems.get(i).getItemId());
-            FirebaseDatabase.getInstance().getReference("Orders/"+orderId).child("Items").child("ItemNumber").setValue(CartItems.get(i).getItemNumber());
-        }
+
 
     }
 

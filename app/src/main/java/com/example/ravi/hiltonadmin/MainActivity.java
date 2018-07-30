@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    tRegisterStatus.setText("oops! , Please Try Again");
+                    tRegisterStatus.setText("oops! , Please Try Again "+e.toString());
                     UpdateUI(STATE_VERIFY_FAILED);
                 }
             }
@@ -410,7 +410,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG,"State Verify failed");
 
                 //verification failed
-                tRegisterStatus.setText("oops something went wrong");
+                //tRegisterStatus.setText("oops something went wrong");
                 enableViews(ephone,bsignup);
                 enableEphone();
                 disableViews(eVerifyCode,bVerify,tResend);
