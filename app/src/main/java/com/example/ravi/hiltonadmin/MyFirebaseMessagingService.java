@@ -12,6 +12,8 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -20,6 +22,15 @@ import static com.android.volley.VolleyLog.TAG;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
+    @Override
+    public void onNewToken(String s) {
+        super.onNewToken(s);
+        sendTokenToServer(s);
+
+    }
+    public void sendTokenToServer(String token){
+        FirebaseDatabase.getInstance().getReference("UserData").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("FirebaseToken").setValue(token);
+    }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {

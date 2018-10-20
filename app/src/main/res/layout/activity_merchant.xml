@@ -20,6 +20,7 @@
          android:src="@drawable/ravi" />
 
      <TextView
+         android:id="@+id/tAmount"
          android:layout_width="0dp"
          android:layout_height="wrap_content"
          android:layout_weight="2.5"
@@ -33,6 +34,7 @@
 
 
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_above="@+id/lbottomButtons"
         android:layout_height="wrap_content">
@@ -42,11 +44,17 @@
             android:layout_margin="10dp"
             android:layout_height="wrap_content">
 
-            <android.support.design.widget.TextInputEditText
+            <AutoCompleteTextView
                 android:layout_width="match_parent"
                 android:id="@+id/eAddress"
                 android:hint="Address"
                 android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/bcLocation"
+                android:onClick="currLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Current LOcation"/>
 
         </android.support.design.widget.TextInputLayout>
 

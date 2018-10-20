@@ -1,10 +1,12 @@
 package com.example.ravi.hiltonadmin;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
 import android.support.v7.widget.LinearLayoutManager;
@@ -99,6 +101,11 @@ public class CartFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_cart, container, false);
+        final ProgressDialog progressDialog=new ProgressDialog(getActivity());
+        progressDialog.setTitle("Loading");
+        progressDialog.setMessage("Cooking your stuff");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
         tTotalCost=(TextView)view.findViewById(R.id.tTotalCost);
         recyclerView=view.findViewById(R.id.rCartView);
@@ -110,10 +117,31 @@ public class CartFragment extends Fragment {
         bCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i =new Intent(getContext(),MerchantActivity.class);
-                i.putExtra("amount",amount);
-                i.putExtra("CartItems",CartItems);
-                startActivity(i);
+                String userId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+
+                final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("UserData/"+userId+"/Coupons");
+                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        int couponAmount;
+                        couponAmount=Integer.parseInt(dataSnapshot.getValue(String.class));
+                        Intent i =new Intent(getContext(),MerchantActivity.class);
+                        amount = Math.max(0,amount-couponAmount);
+                        couponAmount = 0;
+                        databaseReference.setValue(Integer.toString(amount));
+
+
+                        i.putExtra("amount",amount);
+                        i.putExtra("CartItems",CartItems);
+                        startActivity(i);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
             }
         });
 
@@ -129,6 +157,12 @@ public class CartFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 final long NumberOfItems=dataSnapshot.child("Cart").child("Items").getChildrenCount();
+                if(NumberOfItems==0)
+                {
+                    progressDialog.cancel();
+                    tTotalCost.setText("Total Cost("+totalItems+" Items) : "+checkoutSum );
+
+                }
                 for(DataSnapshot data: (dataSnapshot.child("Cart").child("Items").getChildren()))
                 {
                     final String ItemId= data.getKey();//getting Item Key
@@ -167,7 +201,7 @@ public class CartFragment extends Fragment {
                                         recyclerView.setAdapter(cartListAdapter);
                                         FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart").child("CheckoutSum").setValue(Integer.toString(checkoutSum));
                                         FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart").child("TotalItems").setValue(Integer.toString(totalItems));
-
+                                        progressDialog.cancel();
 
 
                                         
