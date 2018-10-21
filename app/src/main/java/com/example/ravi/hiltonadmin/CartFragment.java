@@ -128,7 +128,7 @@ public class CartFragment extends Fragment {
                         Intent i =new Intent(getContext(),MerchantActivity.class);
                         amount = Math.max(0,amount-couponAmount);
                         couponAmount = 0;
-                        databaseReference.setValue(Integer.toString(amount));
+
 
 
                         i.putExtra("amount",amount);
@@ -193,7 +193,6 @@ public class CartFragment extends Fragment {
                                     CartItems.add(new Items(ItemId,ItemName,ItemCategory,ItemNumber,ItemDescription,ItemPrice,ImageUrl));
                                     totalItems+=Integer.parseInt(ItemNumber);
                                     checkoutSum+=Integer.parseInt(ItemNumber)*Integer.parseInt(ItemPrice);
-
                                     if(Count==NumberOfItems)//Things to be Performed only once and at last
 
                                     {
@@ -201,10 +200,8 @@ public class CartFragment extends Fragment {
                                         recyclerView.setAdapter(cartListAdapter);
                                         FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart").child("CheckoutSum").setValue(Integer.toString(checkoutSum));
                                         FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart").child("TotalItems").setValue(Integer.toString(totalItems));
+                                        Count=0;
                                         progressDialog.cancel();
-
-
-                                        
                                     }
 
 
