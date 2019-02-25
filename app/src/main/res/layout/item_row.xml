@@ -79,6 +79,7 @@
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:textColor="#000"
+            android:textSize="22sp"
             android:text="Item Name"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
@@ -113,7 +114,7 @@
 
             <Button
                 android:elevation="10dp"
-                android:background="#ff0000"
+                android:background="#00E676"
                 android:layout_weight="1"
                 android:id="@+id/bAddToCart"
                 android:layout_width="match_parent"

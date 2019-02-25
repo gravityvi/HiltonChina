@@ -4,8 +4,8 @@
     android:useLevel="true"
     android:dither="true">
 
-    <size android:height="8dip" android:width="8dip"/>
+    <size android:height="8dp" android:width="8dp"/>
+    <stroke android:color="#898888" android:width="2dp" />
 
-    <solid android:color="#000000"/>
 
 </shape>

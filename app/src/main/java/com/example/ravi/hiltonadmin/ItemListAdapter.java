@@ -23,8 +23,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+
 
 /**
  * Created by ravi on 29-12-2017.
@@ -57,7 +60,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Items item= arrayList.get(position);//Item with the index position in arrayList
 
 
@@ -68,8 +71,11 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
         holder.tItemPrice.setText("PRICE: "+item.getItemPrice());//Setting ItemPrice
         holder.tDesc.setText(item.getItemDescription());//Setting ItemDescription
         //Setting ItemImage
-        Bitmap bmp= BitmapFactory.decodeByteArray(item.getImage(),0,item.getImage().length);
-        holder.iItemImage.setImageBitmap(bmp);
+        /*Bitmap bmp= BitmapFactory.decodeByteArray(item.getImage(),0,item.getImage().length);
+        holder.iItemImage.setImageBitmap(bmp);*/
+
+        Picasso.with(context).load(item.getImageUrl()).placeholder(R.drawable.ravi).into(holder.iItemImage);
+
 
 
 
@@ -95,6 +101,8 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
                 {
                     a--;
                     holder.tItemNumber.setText(Integer.toString(a));
+
+
                 }
 
 
@@ -111,8 +119,8 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
                 String userUid=user.getUid();
 
                 //adding Selected Item Into database
-                databaseReference.child(userUid).child("Cart").child(item.getItemId()).child("ItemNumber").setValue(holder.tItemNumber.getText().toString());
-                databaseReference.child(userUid).child("Cart").child(item.getItemId()).child("ItemCategory").setValue(item.getItemCategory());
+                databaseReference.child(userUid).child("Cart").child("Items").child(item.getItemId()).child("ItemNumber").setValue(holder.tItemNumber.getText().toString());
+                databaseReference.child(userUid).child("Cart").child("Items").child(item.getItemId()).child("ItemCategory").setValue(item.getItemCategory());
 
                 Toast.makeText(context,"Item Added to Cart",Toast.LENGTH_LONG).show();
                 
@@ -131,6 +139,8 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
         return arrayList.size();
     }
 
+
+
     class ViewHolder extends RecyclerView.ViewHolder
     {
         Button bIncrease;
@@ -142,6 +152,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
         TextView tItemName;
         TextView tItemPrice;
         Button bAddToCart;
+
 
         public ViewHolder(View itemView) {
             super(itemView);

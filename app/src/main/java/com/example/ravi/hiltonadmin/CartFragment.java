@@ -1,16 +1,22 @@
 package com.example.ravi.hiltonadmin;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,15 +50,25 @@ public class CartFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private int Count=0;
+    private int amount;
     private DatabaseReference ItemData;
     private OnFragmentInteractionListener mListener;
+    private Button bCheckout;
     private RecyclerView recyclerView;
     private DatabaseReference databaseReference;
-    private ArrayList<Items> CartItems;
+    private  ArrayList<Items> CartItems;
     private static final String TAG="PhoneAuthActivity";
     private CartListAdapter cartListAdapter;
     private ValueEventListener value;
     private ValueEventListener value1;
+    private static TextView  tTotalCost;
+    private static int checkoutSum=0;
+    private static int totalItems=0;
+
+
+
+
+
 
 
     public CartFragment() {
@@ -85,19 +101,69 @@ public class CartFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_cart, container, false);
+        final ProgressDialog progressDialog=new ProgressDialog(getActivity());
+        progressDialog.setTitle("Loading");
+        progressDialog.setMessage("Cooking your stuff");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
+        tTotalCost=(TextView)view.findViewById(R.id.tTotalCost);
         recyclerView=view.findViewById(R.id.rCartView);
+        bCheckout = view.findViewById(R.id.bChekout);
         CartItems=new ArrayList<>();//creating Arraylist of type Items to add Cart Items in database into this array
-        cartListAdapter=new CartListAdapter(getContext(),CartItems);
+        CartItems.clear();
+
+
+        bCheckout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String userId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+
+                final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("UserData/"+userId+"/Coupons");
+                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        int couponAmount;
+                        couponAmount=Integer.parseInt(dataSnapshot.getValue(String.class));
+                        Intent i =new Intent(getContext(),MerchantActivity.class);
+                        amount = Math.max(0,amount-couponAmount);
+                        couponAmount = 0;
+
+
+
+                        i.putExtra("amount",amount);
+                        i.putExtra("CartItems",CartItems);
+                        startActivity(i);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+        });
+
+        /*****Reading cart items and setting up recycler view ***/
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();//getting the current User
+       final FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();//getting the current User
         databaseReference= FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid());//going in User profile to read Cart data
+        checkoutSum=0;
+        totalItems=0;
         value1=new ValueEventListener(){
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                final long NumberOfItems=dataSnapshot.child("Cart").getChildrenCount();
-                for(DataSnapshot data: dataSnapshot.child("Cart").getChildren())
+                final long NumberOfItems=dataSnapshot.child("Cart").child("Items").getChildrenCount();
+                if(NumberOfItems==0)
+                {
+                    progressDialog.cancel();
+                    tTotalCost.setText("Total Cost("+totalItems+" Items) : "+checkoutSum );
+
+                }
+                for(DataSnapshot data: (dataSnapshot.child("Cart").child("Items").getChildren()))
                 {
                     final String ItemId= data.getKey();//getting Item Key
                     final String ItemCategory=data.child("ItemCategory").getValue(String.class);//getting Item Category
@@ -106,8 +172,8 @@ public class CartFragment extends Fragment {
 
 
 
-
-                    ItemData=FirebaseDatabase.getInstance().getReference("ItemData").child(ItemCategory).child(ItemId);//going directly to Item to retrive ItemData
+                    System.out.println(ItemCategory+" "+ItemId);
+                    ItemData=FirebaseDatabase.getInstance().getReference("ItemData").child(ItemCategory).child(ItemId);//go`
 
                     value=new ValueEventListener()
                     {
@@ -119,22 +185,29 @@ public class CartFragment extends Fragment {
 
 
                             //getting Image File From url of Database--
-                            String ImageUrl= dataSnapshot.child("Image").getValue(String.class);
-                            StorageReference storageReference= FirebaseStorage.getInstance().getReferenceFromUrl(ImageUrl);
-                            storageReference.getBytes(1024*1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                @Override
-                                public void onSuccess(byte[] bytes) {
+                            final String ImageUrl= dataSnapshot.child("Image").getValue(String.class);
+
+
+
                                     Count++;
-                                    CartItems.add(new Items(ItemId,bytes,ItemName,ItemCategory,ItemNumber,ItemDescription,ItemPrice));
+                                    CartItems.add(new Items(ItemId,ItemName,ItemCategory,ItemNumber,ItemDescription,ItemPrice,ImageUrl));
+                                    totalItems+=Integer.parseInt(ItemNumber);
+                                    checkoutSum+=Integer.parseInt(ItemNumber)*Integer.parseInt(ItemPrice);
+                                    if(Count==NumberOfItems)//Things to be Performed only once and at last
 
-                                    if(Count==NumberOfItems)//Things to be Performed only once
+                                    {
+                                        cartListAdapter=new CartListAdapter(getContext(),CartItems);
                                         recyclerView.setAdapter(cartListAdapter);
+                                        FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart").child("CheckoutSum").setValue(Integer.toString(checkoutSum));
+                                        FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart").child("TotalItems").setValue(Integer.toString(totalItems));
+                                        Count=0;
+                                        progressDialog.cancel();
+                                    }
 
 
 
 
-                                }
-                            });
+
 
                         }
 
@@ -143,7 +216,9 @@ public class CartFragment extends Fragment {
 
                         }
                     };
-                    ItemData.addValueEventListener(value);
+                    ItemData.addListenerForSingleValueEvent(value);
+
+                    /*****************************************************************************/
 
 
 
@@ -163,12 +238,35 @@ public class CartFragment extends Fragment {
 
             }
         };
-        databaseReference.addValueEventListener(value1);
+        databaseReference.addListenerForSingleValueEvent(value1);
+
+
+        DatabaseReference reference=FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart");
+                reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.hasChild("TotalItems"))
+                    {
+                        int totalItems=Integer.parseInt(dataSnapshot.child("TotalItems").getValue(String.class));
+                        int checkoutSum=Integer.parseInt(dataSnapshot.child("CheckoutSum").getValue(String.class));
+                        amount = checkoutSum;
+                        tTotalCost.setText("Total Cost("+totalItems+" Items) : "+checkoutSum );
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
 
 
 
         return view;
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -186,6 +284,7 @@ public class CartFragment extends Fragment {
             //on attach called
             Log.d(TAG,"Cart Fragment on Attach called ");
         }
+
     }
 
     @Override
@@ -194,16 +293,8 @@ public class CartFragment extends Fragment {
         mListener = null;
         Log.d(TAG,"Cart Fragment on Detach called");
 
-        if(ItemData!=null)
-        {
-            //removing value event listner so that they does not create problem
-            ItemData.removeEventListener(value);
 
 
-        }
-
-        if(databaseReference!=null)
-            databaseReference.removeEventListener(value1);
 
     }
 
@@ -221,4 +312,6 @@ public class CartFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
 }

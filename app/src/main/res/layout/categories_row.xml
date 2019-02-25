@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:background="@drawable/carview"
     android:id="@+id/lCategoriesLayout"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="120dp"
@@ -8,7 +9,7 @@
     android:orientation="horizontal"
     android:padding="10dp">
     <TextView
-        android:textColor="#ffffff"
+        android:textColor="#000"
         android:id="@+id/tCategoriesRowTitle"
         android:textSize="30dp"
         android:gravity="center"

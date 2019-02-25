@@ -1,9 +1,12 @@
 package com.example.ravi.hiltonadmin;
 
 import android.content.Context;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.nfc.Tag;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +18,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.Inflater;
 
 /**
@@ -28,11 +37,13 @@ import java.util.zip.Inflater;
 public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHolder>  {
 
     private Context context;
-    private ArrayList<Items> CartList;
+    private List<Items> CartList;
     private LayoutInflater inflater;
+    private static final String TAG="PhoneAuthActivity";
+    private static final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
 
-    public CartListAdapter(Context context, ArrayList<Items> CartList)
+    public CartListAdapter(Context context, List<Items> CartList)
     {
         this.context=context;
         this.CartList=CartList;//Cart Items
@@ -47,28 +58,57 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final  ViewHolder holder, final int position) {
 
-        Items item=CartList.get(position);
+        final Items item=CartList.get(position);
 
         holder.tItemNumber1.setText(item.getItemNumber());//Setting ItemNumber
         holder.tItemName1.setText(item.getItemName());//Setting ItemNumber
         holder.tItemPrice1.setText("PRICE: "+item.getItemPrice());//Setting ItemPrice
         holder.tDesc1.setText(item.getItemDescription());//Setting Item Description
         //Setting Item Image
-        Bitmap bmp= BitmapFactory.decodeByteArray(item.getImage(),0,item.getImage().length);
-        holder.iItemImage1.setImageBitmap(bmp);
+        Picasso.with(context).load(item.getImageUrl()).placeholder(R.drawable.ravi).into(holder.iItemImage1);
 
-        //functionality to increase ItemNumber
+
+
+
+       //functionality to increase ItemNumber
         holder.bIncrease1.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 int a=Integer.parseInt(holder.tItemNumber1.getText().toString()); // getting ItemNumber
                 a++;
-                holder.tItemNumber1.setText(Integer.toString(a));
+                item.setItemNumber(Integer.toString(a));
+                FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart/Items/"+item.getItemId()+"/ItemNumber").setValue(Integer.toString(a));
+
+
+
+                FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                       int TotalItems = Integer.parseInt(dataSnapshot.child("TotalItems").getValue(String.class));
+                       TotalItems += 1;
+
+                       int CheckoutSum = Integer.parseInt(dataSnapshot.child("CheckoutSum").getValue(String.class));
+                       CheckoutSum += Integer.parseInt(item.getItemPrice());
+                        FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart").child("TotalItems").setValue(Integer.toString(TotalItems));
+                        FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart").child("CheckoutSum").setValue(Integer.toString(CheckoutSum));
+                        holder.tItemNumber1.setText((item.getItemNumber()));
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
         });
+
+
+
+
+
 
         //functionality to decrease Item Number
         holder.bDecrease1.setOnClickListener(new View.OnClickListener() {
@@ -82,27 +122,45 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
                 else
                 {
                     a--;
-                    holder.tItemNumber1.setText(Integer.toString(a));
+                    item.setItemNumber(Integer.toString(a));
+                    FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart/Items/"+item.getItemId()+"/ItemNumber").setValue(Integer.toString(a));
+
+
+
+                    FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            int TotalItems = Integer.parseInt(dataSnapshot.child("TotalItems").getValue(String.class));
+                            TotalItems -= 1;
+
+                            int CheckoutSum = Integer.parseInt(dataSnapshot.child("CheckoutSum").getValue(String.class));
+                            CheckoutSum -= Integer.parseInt(item.getItemPrice());
+                            FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart").child("TotalItems").setValue(Integer.toString(TotalItems));
+                            FirebaseDatabase.getInstance().getReference("UserData/"+user.getUid()+"/Cart").child("CheckoutSum").setValue(Integer.toString(CheckoutSum));
+                            holder.tItemNumber1.setText((item.getItemNumber()));
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+
                 }
 
 
             }
         });
 
-        //button funtionality to remove Item
-        holder.bRemove1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("UserData/"+ FirebaseAuth.getInstance().getCurrentUser().getUid()+"/Cart/"+CartList.get(holder.getAdapterPosition()).getItemId());
-                    databaseReference.removeValue();
-                    CartList.remove(holder.getAdapterPosition());
-                    notifyItemRemoved(holder.getAdapterPosition());
 
-            }
-        });
+
+
 
 
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -111,7 +169,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
 
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
 
         Button bIncrease1;
@@ -136,6 +194,34 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
             tDesc1=itemView.findViewById(R.id.tItemDescription1);
             tItemName1=itemView.findViewById(R.id.tItemName1);
             tItemPrice1=itemView.findViewById(R.id.tItemPrice1);
+            bRemove1.setOnClickListener(this);
+
+        }
+
+        @Override
+        public void onClick(View view) {
+            final int position=getAdapterPosition();
+            final DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("UserData/"+ FirebaseAuth.getInstance().getCurrentUser().getUid()+"/Cart/Items/"+CartList.get(position).getItemId());
+            databaseReference.removeValue();
+            FirebaseDatabase.getInstance().getReference("UserData/"+ FirebaseAuth.getInstance().getCurrentUser().getUid()+"/Cart").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    int totalItems = Integer.parseInt(dataSnapshot.child("TotalItems").getValue(String.class));
+                    totalItems -= Integer.parseInt(CartList.get(position).getItemNumber());
+                    int checkoutSum = Integer.parseInt(dataSnapshot.child("CheckoutSum").getValue(String.class));
+                    checkoutSum -= (Integer.parseInt(CartList.get(position).getItemPrice()) * Integer.parseInt(CartList.get(position).getItemNumber()));
+                    FirebaseDatabase.getInstance().getReference("UserData/"+ FirebaseAuth.getInstance().getCurrentUser().getUid()+"/Cart").child("TotalItems").setValue(Integer.toString(totalItems));
+                    FirebaseDatabase.getInstance().getReference("UserData/"+ FirebaseAuth.getInstance().getCurrentUser().getUid()+"/Cart").child("CheckoutSum").setValue(Integer.toString(checkoutSum));
+                    CartList.remove(position);
+                    notifyItemRemoved(position);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
 
 
         }

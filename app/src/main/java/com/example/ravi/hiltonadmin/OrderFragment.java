@@ -1,11 +1,13 @@
 package com.example.ravi.hiltonadmin;
 
+import android.app.ProgressDialog;
 import android.arch.lifecycle.LifecycleOwner;
 import android.content.Context;
 import android.net.Uri;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -86,10 +88,16 @@ public class OrderFragment extends Fragment {
         Log.d(TAG,"orderFragment onCreateView called ");
         // Inflate the layout for this fragment
         layout=inflater.inflate(R.layout.fragment_order, container, false);
+        final ProgressDialog progressDialog=new ProgressDialog(getActivity());
+        progressDialog.setTitle("Loading");
+        progressDialog.setMessage("Cooking your stuff");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
 
          arrayList=new ArrayList<String>(); // arraylist for adding all categories
          DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("ItemData");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot data:dataSnapshot.getChildren())
@@ -100,6 +108,7 @@ public class OrderFragment extends Fragment {
                     CategoriesListAdapter adapter=new CategoriesListAdapter(getContext(),arrayList,getActivity().getSupportFragmentManager());
                     rCategoriesList.setAdapter(adapter);
                     rCategoriesList.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    progressDialog.cancel();
 
 
                 }
@@ -139,6 +148,8 @@ public class OrderFragment extends Fragment {
         mListener = null;
 
         Log.d(TAG,"orderFragment OnDetach called");
+        FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
+        fragmentManager.popBackStack("Categories", FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
     }
 

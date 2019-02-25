@@ -116,6 +116,7 @@ public class HomeFragment extends Fragment {
         ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getContext());
         ViewPager.setAdapter(viewPagerAdapter);
 
+
         Timer timer =new Timer(); //making swiping automatic
         timer.scheduleAtFixedRate(new MyTimerTask() ,2000, 4000);
 
@@ -128,7 +129,7 @@ public class HomeFragment extends Fragment {
             dots[i].setImageResource(R.drawable.nonactive_dot);
 
             LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setMargins(8,0,8,0);
+            params.setMargins(6,0,6,0);
             lSliderdots.addView(dots[i],params);
         }
 

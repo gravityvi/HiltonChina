@@ -1,6 +1,7 @@
 package com.example.ravi.hiltonadmin;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.graphics.Color;
@@ -75,16 +76,7 @@ public class CategoriesListAdapter extends RecyclerView.Adapter<CategoriesListAd
 
 
         /************************adding different colours to rows*********************/
-        if(position%2==0) {
-            holder.CategoriesRowTitle.setText(arrayList.get(position));
-            holder.linearLayout.setBackgroundColor(Color.parseColor("#C5CAE9"));
-
-        }
-        else
-        {
-            holder.CategoriesRowTitle.setText(arrayList.get(position));
-            holder.linearLayout.setBackgroundColor(Color.parseColor("#3F51B5"));
-        }
+        holder.CategoriesRowTitle.setText(arrayList.get(position));
 /**************************************************************************************/
 
 /**********Setting OnClcikListner for Every Row****************************************/
@@ -92,9 +84,15 @@ public class CategoriesListAdapter extends RecyclerView.Adapter<CategoriesListAd
             @Override
             public void onClick(View view) {
 
+                final ProgressDialog progressDialog=new ProgressDialog(context);
+                progressDialog.setTitle("Loading");
+                progressDialog.setMessage("getting your favourite dishes ready");
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+
                 //getting values from database of prticular category choosen
                final ArrayList<Items> ItemList=new ArrayList<>();
-                databaseReference.child(holder.CategoriesRowTitle.getText().toString()).addValueEventListener(new ValueEventListener() {
+                databaseReference.child(holder.CategoriesRowTitle.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(final DataSnapshot dataSnapshot) {
                         Count=0;
@@ -113,31 +111,24 @@ public class CategoriesListAdapter extends RecyclerView.Adapter<CategoriesListAd
 
 
                             //getting Image File From url of Database
-                            String ImgeUrl= data.child("Image").getValue(String.class);
-                            StorageReference storageReference=storage.getReferenceFromUrl(ImgeUrl);
-                            storageReference.getBytes(1024*1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                @Override
-                                public void onSuccess(byte[] bytes) {
+                            final String ImgeUrl= data.child("Image").getValue(String.class);
+
+
 
                                     //Creating Fragment for selected row and adding Categories Items to the arraylist and passing to the ItemsFragment
 
-                                    Items item=new Items(ItemId,bytes,ItemName,ItemCategory,ItemNumber,Desc,ItemPrice);//Items class contain all field needed
+                                    Items item=new Items(ItemId,ItemName,ItemCategory,ItemNumber,Desc,ItemPrice,ImgeUrl);//Items class contain all field needed
                                     ItemList.add(item);//adding item
                                     Count++;
                                     if(Count==dataSnapshot.getChildrenCount())//Things to be performed only at the end
-                                         {
+                                    {
                                         //replacing fragment with Items of a Particular Category
 
                                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                        fragmentTransaction.addToBackStack("Categories");//adding Categories to the backstack
-                                        fragmentTransaction.replace(R.id.lFragmentContent, ItemsFragment.newInstance(ItemList)).commit();
+
+                                        fragmentTransaction.replace(R.id.lFragmentContent, ItemsFragment.newInstance(ItemList),"9").addToBackStack(null).commit();
+                                        progressDialog.cancel();
                                     }
-
-                                }
-                            });
-
-
-
 
 
                         }

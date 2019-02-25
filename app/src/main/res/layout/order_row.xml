@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <TextView
+        android:id="@+id/tOrderId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Order_ID: #1234567"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+    <TextView
+        android:id="@+id/tTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
+        android:text="12:45"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+    <ImageView
+        android:id="@+id/iProgressStatus"
+        android:layout_margin="5dp"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/in_process_status"
+        android:layout_below="@+id/tTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tAmountLabel"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tOrderId"
+        android:layout_marginLeft="10dp"
+        android:text="Amount: "
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.PopupMenu.Header" />
+    <TextView
+        android:id="@+id/tAmount"
+        android:layout_toRightOf="@+id/tAmountLabel"
+        android:textColor="@color/colorPrimary"
+        android:layout_below="@+id/tOrderId"
+        android:text="125"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <android.support.design.button.MaterialButton
+        android:text="View"
+        android:textSize="18sp"
+        android:id="@+id/bViewItems"
+        app:cornerRadius="8dp"
+        android:layout_below="@+id/iProgressStatus"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

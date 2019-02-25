@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:layout_height="match_parent"
+
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:design="http://schemas.android.com/tools">
@@ -17,12 +19,16 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/BottomNavigation"
         android:layout_width="match_parent"
+        app:itemIconTint="@color/bottom_navigation_color"
         android:layout_height="56dp"
+        app:itemTextColor="@color/bottom_navigation_color"
         android:layout_alignParentBottom="true"
-        app:itemTextColor="#000000"
-        android:background="#ff0000"
-        app:menu="@menu/navigation"
-        />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        app:menu="@menu/navigation" />
+
+
 
 
 </RelativeLayout>
+
