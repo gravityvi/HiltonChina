@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 
 import android.support.v7.widget.LinearLayoutManager;

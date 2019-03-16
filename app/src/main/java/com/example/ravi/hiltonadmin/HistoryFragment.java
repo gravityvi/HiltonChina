@@ -6,10 +6,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -30,6 +33,10 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class HistoryFragment extends Fragment {
+
+    private static final String Tag = "HistoryFragment";
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -45,8 +52,6 @@ public class HistoryFragment extends Fragment {
     private View layout;
     private ArrayList<Order> orderList;
     private ArrayList<Items> itemList;
-    private long ItemCount=0;
-    private long TotalItems=0;
     private long TotalOrders=0;
     private long OrderCount=0;
 
@@ -87,13 +92,18 @@ public class HistoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         layout =  inflater.inflate(R.layout.fragment_history, container, false);
+        itemList = new ArrayList<Items>();
+        orderList = new ArrayList<Order>();
+
         final ProgressDialog progressDialog=new ProgressDialog(getActivity());
         progressDialog.setTitle("Loading");
         progressDialog.setMessage("Cooking your stuff");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        FirebaseDatabase.getInstance().getReference("UserData/"+ FirebaseAuth.getInstance().getCurrentUser().getUid().toString()+"/Orders").addListenerForSingleValueEvent(new ValueEventListener() {
+        /** using sample id **/
+        //FirebaseAuth.getInstance().getCurrentUser().getUid().toString()
+        FirebaseDatabase.getInstance().getReference("UserData/"+getString(R.string.sample_id)+"/Orders").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
                 TotalOrders=dataSnapshot.getChildrenCount();
@@ -101,12 +111,17 @@ public class HistoryFragment extends Fragment {
                 {
                     final String orderId = orderSnapshot.getKey();
                     String Address = orderSnapshot.child("Address").getValue(String.class);
-                    final String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+                    /** using sample id **/
+                    //FirebaseAuth.getInstance().getCurrentUser().getUid().toString()
+                    final String UserId = getString(R.string.sample_id) ;
                     final String Paid = orderSnapshot.child("Paid").getValue(String.class);
                     final String PaymentType = orderSnapshot.child("PaymentType").getValue(String.class);
+                    final String Progress = orderSnapshot.child("Progress").getValue(String.class);
                     itemList.clear();
-                    TotalItems = orderSnapshot.child("Items").getChildrenCount();
-
+                    final long TotalItems = orderSnapshot.child("Items").getChildrenCount();
+                    final long countItems[] = new long[1];
+                    countItems[0]=0;
+                    Log.d(Tag,"Total Items "+TotalItems);
                     for(DataSnapshot  itemSnapshot : orderSnapshot.child("Items").getChildren())
                     {
                         final String Itemid = itemSnapshot.getKey();
@@ -121,17 +136,25 @@ public class HistoryFragment extends Fragment {
                                 String ItemUrl = Itemdata.child("Image").getValue(String.class);
                                 Items i = new Items(Itemid,ItemName,itemCategory,itemNumber,ItemDescription,ItemPrice,ItemUrl);
                                 itemList.add(i);
-                                ItemCount++;
-                                if(ItemCount == TotalItems)
+                                countItems[0]++;
+                                Log.d(Tag,"Item count"+countItems[0]);
+                                if(countItems[0] == TotalItems)
                                 {
-                                    Order o = new Order(orderId,UserId,null,null,Paid,null,PaymentType,null,null,itemList);
+                                    Log.d(Tag,"Item Count Total Count "+countItems[0]+" "+TotalItems);
+                                    Order o = new Order(orderId,UserId,null,null,Paid,null,PaymentType,Progress,null,itemList);
                                     orderList.add(o);
-                                    ItemCount=0;
+                                    countItems[0]=0;
                                     OrderCount++;
 
                                     if(OrderCount == TotalOrders)
                                     {
                                         //set adapter and linear layout manager
+                                        rOrders = layout.findViewById(R.id.rOrders);
+                                        OrdersListAdapter ordersListAdapter = new OrdersListAdapter(getContext(),orderList);
+                                        rOrders.setAdapter(ordersListAdapter);
+                                        rOrders.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                        progressDialog.cancel();
+
                                     }
                                 }
                             }
@@ -147,6 +170,7 @@ public class HistoryFragment extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+
 
             }
         });
@@ -167,8 +191,7 @@ public class HistoryFragment extends Fragment {
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+
         }
     }
 

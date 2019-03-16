@@ -21,6 +21,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.*;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -86,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.sign_in);
 
-
+        FirebaseApp.initializeApp(this);
 
         //Restore instance state if the user is already logged in
         if(savedInstanceState!=null)
@@ -94,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
             onRestoreInstanceState(savedInstanceState);
 
         }
-
 
         database =FirebaseDatabase.getInstance();
         myRef = database.getReference("UserData");

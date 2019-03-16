@@ -65,20 +65,20 @@ public class Home extends AppCompatActivity {
 
                 case R.id.navigation_history:
 
-                    boolean exist1 = fragmentExist(HomeFragment.class.getName());
+                    boolean exist1 = fragmentExist(HistoryFragment.class.getName());
 
                     if(exist1)
                     {
-                        fragmentManager.popBackStackImmediate(HomeFragment.class.getName(),0);
+                        fragmentManager.popBackStackImmediate(HistoryFragment.class.getName(),0);
                     }
                     else{
-                        if(BottomNavigation.getSelectedItemId() != R.id.navigation_home)
+                        if(BottomNavigation.getSelectedItemId() != R.id.navigation_history)
                         {
-                            transaction.replace(R.id.lFragmentContent, new HomeFragment(),"2").addToBackStack(HomeFragment.class.getName()).commit();
+                            transaction.replace(R.id.lFragmentContent, new HistoryFragment(),"2").addToBackStack(HistoryFragment.class.getName()).commit();
                         }
                     }
-
                     return true;
+
                 case R.id.navigation_home:
                     boolean exist2 = fragmentExist(HomeFragment.class.getName());
 
