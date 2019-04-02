@@ -109,9 +109,9 @@ public class HomeFragment extends Fragment {
         lSliderdots=(LinearLayout)view.findViewById(R.id.lSliderDots); //dots below it
         bSignout=(Button)view.findViewById(R.id.bSignout);
 
-        /******************For Image Slider Present at the Home Page***/
 
 
+        /******************For Image Slider Present at the Home Page***********/
 
         ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getContext());
         ViewPager.setAdapter(viewPagerAdapter);

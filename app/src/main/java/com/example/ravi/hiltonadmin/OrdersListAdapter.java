@@ -1,6 +1,8 @@
 package com.example.ravi.hiltonadmin;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.button.MaterialButton;
 import android.support.v7.widget.RecyclerView;
@@ -19,12 +21,14 @@ import java.util.ArrayList;
 public class OrdersListAdapter extends RecyclerView.Adapter<OrdersListAdapter.ViewHolder> {
     private ArrayList<Order> orders;
     private LayoutInflater inflater;
+    private Context context;
     private DatabaseReference databaseReference;
 
     public OrdersListAdapter(Context context,ArrayList<Order> orders)
     {
         this.orders = orders;
         inflater = LayoutInflater.from(context);
+        this.context=context;
         /** using sample id **/
 //        databaseReference = FirebaseDatabase.getInstance("UserData/"+ FirebaseAuth.getInstance().getUid()+"/Orders").getReference();
     }
@@ -40,7 +44,8 @@ public class OrdersListAdapter extends RecyclerView.Adapter<OrdersListAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        Order o = orders.get(position);
+        final Order o = orders.get(position);
+
 
         holder.tOrderId.setText("#"+o.orderId);
         holder.tAmount.setText("#"+o.paid);
@@ -60,6 +65,15 @@ public class OrdersListAdapter extends RecyclerView.Adapter<OrdersListAdapter.Vi
             holder.iProgressStatus.setImageResource(R.drawable.dispute_status);
 
         }
+
+        holder.bViewItems.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context,OrderItems.class);
+                i.putParcelableArrayListExtra("OrderItems",o.getItemList());
+                ((Activity)context).startActivity(i);
+            }
+        });
 
     }
 

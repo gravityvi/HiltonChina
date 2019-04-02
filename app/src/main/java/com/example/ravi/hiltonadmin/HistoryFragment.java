@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -51,7 +52,6 @@ public class HistoryFragment extends Fragment {
     private RecyclerView rOrders;
     private View layout;
     private ArrayList<Order> orderList;
-    private ArrayList<Items> itemList;
     private long TotalOrders=0;
     private long OrderCount=0;
 
@@ -92,7 +92,6 @@ public class HistoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         layout =  inflater.inflate(R.layout.fragment_history, container, false);
-        itemList = new ArrayList<Items>();
         orderList = new ArrayList<Order>();
 
         final ProgressDialog progressDialog=new ProgressDialog(getActivity());
@@ -110,17 +109,16 @@ public class HistoryFragment extends Fragment {
                 for(DataSnapshot orderSnapshot : dataSnapshot.getChildren())
                 {
                     final String orderId = orderSnapshot.getKey();
-                    String Address = orderSnapshot.child("Address").getValue(String.class);
                     /** using sample id **/
                     //FirebaseAuth.getInstance().getCurrentUser().getUid().toString()
                     final String UserId = getString(R.string.sample_id) ;
                     final String Paid = orderSnapshot.child("Paid").getValue(String.class);
                     final String PaymentType = orderSnapshot.child("PaymentType").getValue(String.class);
                     final String Progress = orderSnapshot.child("Progress").getValue(String.class);
-                    itemList.clear();
                     final long TotalItems = orderSnapshot.child("Items").getChildrenCount();
                     final long countItems[] = new long[1];
                     countItems[0]=0;
+                    final ArrayList<Items> itemList = new ArrayList<>();
                     Log.d(Tag,"Total Items "+TotalItems);
                     for(DataSnapshot  itemSnapshot : orderSnapshot.child("Items").getChildren())
                     {
@@ -141,10 +139,11 @@ public class HistoryFragment extends Fragment {
                                 if(countItems[0] == TotalItems)
                                 {
                                     Log.d(Tag,"Item Count Total Count "+countItems[0]+" "+TotalItems);
-                                    Order o = new Order(orderId,UserId,null,null,Paid,null,PaymentType,Progress,null,itemList);
+                                    final Order o = new Order(orderId,UserId,null,null,Paid,null,PaymentType,Progress,null,itemList);
                                     orderList.add(o);
                                     countItems[0]=0;
                                     OrderCount++;
+
 
                                     if(OrderCount == TotalOrders)
                                     {
@@ -152,6 +151,7 @@ public class HistoryFragment extends Fragment {
                                         rOrders = layout.findViewById(R.id.rOrders);
                                         OrdersListAdapter ordersListAdapter = new OrdersListAdapter(getContext(),orderList);
                                         rOrders.setAdapter(ordersListAdapter);
+                                        rOrders.addItemDecoration(new DividerItemDecoration(rOrders.getContext(),DividerItemDecoration.VERTICAL));
                                         rOrders.setLayoutManager(new LinearLayoutManager(getActivity()));
                                         progressDialog.cancel();
 

@@ -45,6 +45,8 @@ public class Home extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             fragmentManager = getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+
             switch (item.getItemId()) {
                 case R.id.navigation_settings:
                     boolean exist0 = fragmentExist(SettingsFragment.class.getName());
@@ -64,9 +66,7 @@ public class Home extends AppCompatActivity {
                     return true;
 
                 case R.id.navigation_history:
-
                     boolean exist1 = fragmentExist(HistoryFragment.class.getName());
-
                     if(exist1)
                     {
                         fragmentManager.popBackStackImmediate(HistoryFragment.class.getName(),0);
@@ -74,7 +74,7 @@ public class Home extends AppCompatActivity {
                     else{
                         if(BottomNavigation.getSelectedItemId() != R.id.navigation_history)
                         {
-                            transaction.replace(R.id.lFragmentContent, new HistoryFragment(),"2").addToBackStack(HistoryFragment.class.getName()).commit();
+                            transaction.replace(R.id.lFragmentContent, new HistoryFragment(),"1").addToBackStack(HistoryFragment.class.getName()).commit();
                         }
                     }
                     return true;
