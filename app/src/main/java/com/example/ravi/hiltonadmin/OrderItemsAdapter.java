@@ -40,10 +40,10 @@ public class OrderItemsAdapter extends RecyclerView.Adapter<OrderItemsAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             /** hiding not needed views**/
-//            holder.tItemNumber.setVisibility(View.GONE);
-//            holder.bAddtocart.setVisibility(View.GONE);
-//            holder.bIncrease.setVisibility(View.GONE);
-//            holder.bDecrease.setVisibility(View.GONE);
+            holder.tItemNumber.setVisibility(View.GONE);
+            holder.bAddtocart.setVisibility(View.GONE);
+            holder.bIncrease.setVisibility(View.GONE);
+            holder.bDecrease.setVisibility(View.GONE);
             /*******************************************/
 
             Items i = ItemList.get(position);
