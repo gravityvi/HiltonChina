@@ -100,18 +100,17 @@ public class HistoryFragment extends Fragment {
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        /** using sample id **/
-        //FirebaseAuth.getInstance().getCurrentUser().getUid().toString()
-        FirebaseDatabase.getInstance().getReference("UserData/"+getString(R.string.sample_id)+"/Orders").addListenerForSingleValueEvent(new ValueEventListener() {
+
+
+        FirebaseDatabase.getInstance().getReference("UserData/"+FirebaseAuth.getInstance().getCurrentUser().getUid().toString()+"/Orders").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
                 TotalOrders=dataSnapshot.getChildrenCount();
                 for(DataSnapshot orderSnapshot : dataSnapshot.getChildren())
                 {
                     final String orderId = orderSnapshot.getKey();
-                    /** using sample id **/
-                    //FirebaseAuth.getInstance().getCurrentUser().getUid().toString()
-                    final String UserId = getString(R.string.sample_id) ;
+
+                    final String UserId =FirebaseAuth.getInstance().getCurrentUser().getUid().toString() ;
                     final String Paid = orderSnapshot.child("Paid").getValue(String.class);
                     final String PaymentType = orderSnapshot.child("PaymentType").getValue(String.class);
                     final String Progress = orderSnapshot.child("Progress").getValue(String.class);

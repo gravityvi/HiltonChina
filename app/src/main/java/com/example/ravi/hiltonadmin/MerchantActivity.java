@@ -196,7 +196,7 @@ public class MerchantActivity extends AppCompatActivity implements PaymentResult
             paymentType="COD";
             paid=0;
             generateOrderId(); // contains genearting orderId, pushing items and clearing cart and clearing coupons
-
+            finish();
         }
 
     }
@@ -263,7 +263,7 @@ public class MerchantActivity extends AppCompatActivity implements PaymentResult
                 orderId = stringBuilder.toString();
 
                 //updating the value of the count.
-                FirebaseDatabase.getInstance().getReference("OrdersDate6/"+getDate()).child("Count").setValue(Integer.toString(c));
+                FirebaseDatabase.getInstance().getReference("OrdersDate/"+getDate()).child("Count").setValue(Integer.toString(c));
 
                 //getting token
                 getToken();

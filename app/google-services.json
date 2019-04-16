@@ -47,6 +47,14 @@
           }
         },
         {
+          "client_id": "17623371398-93ebcs951j7mbgcirhble04srk47i98p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ravi.hiltonadmin",
+            "certificate_hash": "ab2fc709eb3e264f66e76c3aaa19897c85e07547"
+          }
+        },
+        {
           "client_id": "17623371398-dbhr6vqb5hifeop75jf3a8a8gf7638tf.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -57,20 +65,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "17623371398-dbhr6vqb5hifeop75jf3a8a8gf7638tf.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     },
@@ -83,6 +84,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "17623371398-e8sp3me0u5odgg3pvf89uqi73dujve35.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ravi.hiltonadmin1",
+            "certificate_hash": "945d5783bd2cf9fb17df6d2fb6a07016474e4042"
+          }
+        },
+        {
           "client_id": "17623371398-c51niv6uqiirqu9qo4o3h5n02i0kpg3t.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -91,11 +100,19 @@
           }
         },
         {
-          "client_id": "17623371398-e8sp3me0u5odgg3pvf89uqi73dujve35.apps.googleusercontent.com",
+          "client_id": "17623371398-5tp585mrtkqlleb1q0f4ou4jmbm5lojv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.ravi.hiltonadmin1",
-            "certificate_hash": "945d5783bd2cf9fb17df6d2fb6a07016474e4042"
+            "certificate_hash": "ab2fc709eb3e264f66e76c3aaa19897c85e07547"
+          }
+        },
+        {
+          "client_id": "17623371398-r9nda4jr5l4089dictq4m9ojdpofp2hr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ravi.hiltonadmin1",
+            "certificate_hash": "c636609582a3c563510b9d95914bff7a374fc30e"
           }
         },
         {
@@ -109,20 +126,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "17623371398-dbhr6vqb5hifeop75jf3a8a8gf7638tf.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }
