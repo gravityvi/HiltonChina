@@ -89,7 +89,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                             .setSmallIcon(R.drawable.ravi)
 
-                            .setContentTitle("FCM Message")
+                            .setContentTitle("Accepted  ")
 
                             .setContentText(messageBody)
 

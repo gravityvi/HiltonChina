@@ -7,4 +7,6 @@
     <color name="edisabled_hint">#ECF0F3</color>
     <color name="nav_item_selected">#FF000000</color>
     <color name="nav_item_visible">#CDD4D9</color>
+    <color name="red">#FF0000</color>
+    <color name="yellowish">#F0B770</color>
 </resources>

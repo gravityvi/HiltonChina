@@ -107,7 +107,7 @@ public class HomeFragment extends Fragment {
 
         ViewPager=(ViewPager)view.findViewById(R.id.vImageSlider);//image slider viewpager
         lSliderdots=(LinearLayout)view.findViewById(R.id.lSliderDots); //dots below it
-        bSignout=(Button)view.findViewById(R.id.bSignout);
+
 
 
 
@@ -165,15 +165,6 @@ public class HomeFragment extends Fragment {
 
 
 
-        bSignout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                Intent i=new Intent(getActivity(),MainActivity.class);
-                startActivity(i);
-                getActivity().finish(); //to finish this activity
-            }
-        });
 
         return view;
 
