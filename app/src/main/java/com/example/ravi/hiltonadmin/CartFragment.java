@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -131,10 +132,17 @@ public class CartFragment extends Fragment {
                         couponAmount = 0;
 
 
+                        if(amount==0)
+                        {
+                            Toast.makeText(getContext(),"Cart is Empty!",Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            i.putExtra("amount",amount);
+                            i.putExtra("CartItems",CartItems);
+                            startActivity(i);
+                        }
 
-                        i.putExtra("amount",amount);
-                        i.putExtra("CartItems",CartItems);
-                        startActivity(i);
                     }
 
                     @Override
