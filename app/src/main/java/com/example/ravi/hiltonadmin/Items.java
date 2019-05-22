@@ -9,7 +9,7 @@ import android.os.Parcelable;
  * Created by ravi on 29-12-2017.
  */
 
-public class Items implements Parcelable{
+public class Items implements Parcelable {
 
     private String ImageUrl;
     private String ItemName;
@@ -18,12 +18,19 @@ public class Items implements Parcelable{
     private String ItemDescription;
     private String ItemPrice;
     private String ItemId;
+    private boolean avail;
 
-    /**getters and setters***/
+    /**
+     * getters and setters
+     ***/
 
 
     public String getItemNumber() {
         return ItemNumber;
+    }
+
+    public boolean isAvail() {
+        return avail;
     }
 
     public void setItemNumber(String itemNumber) {
@@ -55,31 +62,30 @@ public class Items implements Parcelable{
     }
 
 
+
     /**********************************************************************/
 
-    Items(String ItemId, String ItemName,String ItemCategory,String ItemNumber, String ItemDescription, String ItemPrice,String ImageUrl)
-    {
-        this.ImageUrl=ImageUrl;
-        this.ItemId=ItemId;
-        this.ItemName=ItemName;
-        this.ItemCategory=ItemCategory;
-        this.ItemDescription=ItemDescription;
-        this.ItemNumber=ItemNumber;
-
-        this.ItemPrice= ItemPrice;
+    Items(String ItemId, String ItemName, String ItemCategory, String ItemNumber, String ItemDescription, String ItemPrice, String ImageUrl,boolean avail) {
+        this.ImageUrl = ImageUrl;
+        this.ItemId = ItemId;
+        this.ItemName = ItemName;
+        this.ItemCategory = ItemCategory;
+        this.ItemDescription = ItemDescription;
+        this.ItemNumber = ItemNumber;
+        this.ItemPrice = ItemPrice;
+        this.avail=avail;
 
     }
 
-    public  Items(Parcel in)
-    {
+    public Items(Parcel in) {
 
-        this.ItemId=in.readString();
-        this.ItemName=in.readString();
-        this.ItemCategory=in.readString();
-        this.ItemNumber=in.readString();
-        this.ItemPrice=in.readString();
-        this.ItemDescription=in.readString();
-        this.ImageUrl=in.readString();
+        this.ItemId = in.readString();
+        this.ItemName = in.readString();
+        this.ItemCategory = in.readString();
+        this.ItemNumber = in.readString();
+        this.ItemPrice = in.readString();
+        this.ItemDescription = in.readString();
+        this.ImageUrl = in.readString();
     }
 
     @Override
@@ -98,8 +104,7 @@ public class Items implements Parcelable{
         parcel.writeString(ImageUrl);
     }
 
-   public final static Parcelable.Creator<Items> CREATOR=new Parcelable.Creator<Items>()
-    {
+    public final static Parcelable.Creator<Items> CREATOR = new Parcelable.Creator<Items>() {
 
         @Override
         public Items createFromParcel(Parcel parcel) {

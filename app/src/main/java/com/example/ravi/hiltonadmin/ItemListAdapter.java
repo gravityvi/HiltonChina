@@ -115,15 +115,25 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
             @Override
             public void onClick(View view) {
 
-                FirebaseUser user=firebaseAuth.getCurrentUser();
-                String userUid=user.getUid();
+                if(!item.isAvail())
+                {
+                    Toast.makeText(context,"Item is not available currently",Toast.LENGTH_SHORT).show();
 
-                //adding Selected Item Into database
-                databaseReference.child(userUid).child("Cart").child("Items").child(item.getItemId()).child("ItemNumber").setValue(holder.tItemNumber.getText().toString());
-                databaseReference.child(userUid).child("Cart").child("Items").child(item.getItemId()).child("ItemCategory").setValue(item.getItemCategory());
+                }
 
-                Toast.makeText(context,"Item Added to Cart",Toast.LENGTH_LONG).show();
-                
+                else
+                {
+                    FirebaseUser user=firebaseAuth.getCurrentUser();
+                    String userUid=user.getUid();
+
+                    //adding Selected Item Into database
+                    databaseReference.child(userUid).child("Cart").child("Items").child(item.getItemId()).child("ItemNumber").setValue(holder.tItemNumber.getText().toString());
+                    databaseReference.child(userUid).child("Cart").child("Items").child(item.getItemId()).child("ItemCategory").setValue(item.getItemCategory());
+
+                    Toast.makeText(context,"Item Added to Cart",Toast.LENGTH_LONG).show();
+
+                }
+
 
 
 

@@ -129,9 +129,10 @@ public class HistoryFragment extends Fragment {
                             public void onDataChange(DataSnapshot Itemdata) {
                                 String ItemDescription = Itemdata.child("Desc").getValue(String.class);
                                 String ItemPrice = Itemdata.child("Price").getValue(String.class);
+                                boolean avail = Itemdata.child("Avail").getValue(boolean.class);
                                 String ItemName = Itemdata.child("Name").getValue(String.class);
                                 String ItemUrl = Itemdata.child("Image").getValue(String.class);
-                                Items i = new Items(Itemid,ItemName,itemCategory,itemNumber,ItemDescription,ItemPrice,ItemUrl);
+                                Items i = new Items(Itemid,ItemName,itemCategory,itemNumber,ItemDescription,ItemPrice,ItemUrl,avail);
                                 itemList.add(i);
                                 countItems[0]++;
                                 Log.d(Tag,"Item count"+countItems[0]);

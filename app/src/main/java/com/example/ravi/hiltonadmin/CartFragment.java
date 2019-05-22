@@ -141,6 +141,7 @@ public class CartFragment extends Fragment {
                             i.putExtra("amount",amount);
                             i.putExtra("CartItems",CartItems);
                             startActivity(i);
+                            getActivity().onBackPressed();
                         }
 
                     }
@@ -191,6 +192,7 @@ public class CartFragment extends Fragment {
                             final String ItemName=dataSnapshot.child("Name").getValue(String.class);//getting ItemName
                             final String ItemDescription=dataSnapshot.child("Desc").getValue(String.class);//getting ItemDescription
                             final String ItemPrice=dataSnapshot.child("Price").getValue(String.class);//getting ItemPrice
+                            final boolean avail = dataSnapshot.child("Avail").getValue(boolean.class);
 
 
                             //getting Image File From url of Database--
@@ -199,7 +201,7 @@ public class CartFragment extends Fragment {
 
 
                                     Count++;
-                                    CartItems.add(new Items(ItemId,ItemName,ItemCategory,ItemNumber,ItemDescription,ItemPrice,ImageUrl));
+                                    CartItems.add(new Items(ItemId,ItemName,ItemCategory,ItemNumber,ItemDescription,ItemPrice,ImageUrl,avail));
                                     totalItems+=Integer.parseInt(ItemNumber);
                                     checkoutSum+=Integer.parseInt(ItemNumber)*Integer.parseInt(ItemPrice);
                                     if(Count==NumberOfItems)//Things to be Performed only once and at last

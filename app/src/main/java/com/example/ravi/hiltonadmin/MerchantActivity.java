@@ -165,7 +165,7 @@ public class MerchantActivity extends AppCompatActivity implements PaymentResult
              *     Invoice Payment
              *     etc.
              */
-            options.put("description", "Order :" + orderId);
+
 
             options.put("currency", "INR");
 

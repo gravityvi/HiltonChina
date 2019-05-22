@@ -25,7 +25,7 @@ android {
 
 dependencies {
     implementation 'com.google.android.gms:play-services-places:16.0.0'
-    implementation 'com.razorpay:checkout:1.4.8'
+    implementation 'com.razorpay:checkout:1.5.2'
     implementation 'com.google.firebase:firebase-core:16.0.4'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:recyclerview-v7:26.1.0'

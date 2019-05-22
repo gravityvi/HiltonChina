@@ -108,6 +108,7 @@ public class CategoriesListAdapter extends RecyclerView.Adapter<CategoriesListAd
                             final String Desc=data.child("Desc").getValue(String.class);// adding Item Description
                             final String ItemPrice=data.child("Price").getValue(String.class);//adding Item price
                             final String ItemNumber="1";//Default value of Number of orders initially for items
+                            final boolean avail = data.child("Avail").getValue(boolean.class);
 
 
                             //getting Image File From url of Database
@@ -117,7 +118,7 @@ public class CategoriesListAdapter extends RecyclerView.Adapter<CategoriesListAd
 
                                     //Creating Fragment for selected row and adding Categories Items to the arraylist and passing to the ItemsFragment
 
-                                    Items item=new Items(ItemId,ItemName,ItemCategory,ItemNumber,Desc,ItemPrice,ImgeUrl);//Items class contain all field needed
+                                    Items item=new Items(ItemId,ItemName,ItemCategory,ItemNumber,Desc,ItemPrice,ImgeUrl,avail);//Items class contain all field needed
                                     ItemList.add(item);//adding item
                                     Count++;
                                     if(Count==dataSnapshot.getChildrenCount())//Things to be performed only at the end
