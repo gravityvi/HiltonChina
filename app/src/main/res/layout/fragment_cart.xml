@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="com.example.ravi.hiltonadmin.CartFragment">
 
@@ -30,9 +31,16 @@
          android:layout_weight="4"
          android:layout_width="match_parent"
          android:layout_height="match_parent" />
-      <Button
+
+
+      <android.support.design.button.MaterialButton
           android:id="@+id/bChekout"
-          android:background="#FF6F00"
+          app:icon="@drawable/ic_arrow_forward_black_24dp"
+          app:iconTint="#000"
+          android:background="@color/colorPrimary"
+          android:textSize="20sp"
+          android:backgroundTint="@color/colorPrimary"
+          android:textColor="#000"
           android:text="CheckOut"
           android:layout_gravity="end"
           android:layout_width="wrap_content"

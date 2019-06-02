@@ -72,6 +72,8 @@
 
 
     <TextView
+        android:textColor="#000"
+        android:layout_margin="15dp"
         android:id="@+id/tRegisterStatus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -81,31 +83,25 @@
         android:textSize="18dp" />
 
 
-    <LinearLayout
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <Button
+            android:layout_alignParentBottom="true"
             android:id="@+id/bVerify"
             android:background="@drawable/bverify"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="Verify"/>
 
 
         <Button
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
             android:onClick="signup"
             android:id="@+id/bsignup"
             android:background="@drawable/bsignin"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-
-    </LinearLayout>
 
 
 

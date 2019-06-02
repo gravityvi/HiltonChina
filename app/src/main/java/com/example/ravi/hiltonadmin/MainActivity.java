@@ -507,6 +507,7 @@ public class MainActivity extends AppCompatActivity {
         for(View v : views)
         {
             v.setEnabled(true);
+            v.setVisibility(View.VISIBLE);
         }
     }
 
@@ -515,6 +516,7 @@ public class MainActivity extends AppCompatActivity {
         for(View v : views)
         {
             v.setEnabled(false);
+            v.setVisibility(View.GONE);
         }
     }
 

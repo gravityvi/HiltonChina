@@ -42,7 +42,7 @@
     <TextView
         android:id="@+id/tAmount"
         android:layout_toRightOf="@+id/tAmountLabel"
-        android:textColor="@color/colorPrimary"
+        android:textColor="#FF00"
         android:layout_below="@+id/tOrderId"
         android:text="125"
         android:textSize="18sp"
@@ -53,6 +53,7 @@
         android:text="View"
         android:textSize="18sp"
         android:id="@+id/bViewItems"
+        android:backgroundTint="@color/colorPrimary"
         app:cornerRadius="8dp"
         android:layout_below="@+id/iProgressStatus"
         android:layout_alignParentEnd="true"

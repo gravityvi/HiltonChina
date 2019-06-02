@@ -1,9 +1,11 @@
 package com.example.ravi.hiltonadmin;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,6 +49,11 @@ public class SettingsFragment extends Fragment {
     private final String PHONE="Phone";
     private final String USERNAME="UserName";
     private final String EMAIL="Email";
+
+    private CardView cdChangeUserDetails;
+    private CardView cdSignout;
+    private CardView cdAboutUs;
+    private CardView cdOutlets;
 
     private Button bChange;
 
@@ -103,34 +110,10 @@ public class SettingsFragment extends Fragment {
         tUsername_Settings=(TextView)view.findViewById(R.id.tUsername_Settings);
         tEmail_Settings=(TextView)view.findViewById(R.id.tEmail_Settings);
         tPhone_Settings=(TextView)view.findViewById(R.id.tPhone_Settings);
-
-        eUsername_Settings=(EditText)view.findViewById(R.id.eUsername_Settings);
-        eEmail_Settings=(EditText)view.findViewById(R.id.eEmail_Settings);
-
-        bChange=(Button)view.findViewById(R.id.bChange);
-        bChange.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (TextUtils.isEmpty(eUsername_Settings.getText()))
-                {
-                    eUsername_Settings.setError("Cannot be Empty");
-                }
-
-                else if(TextUtils.isEmpty(eEmail_Settings.getText()))
-                {
-                    eEmail_Settings.setError("Cannot be Empty");
-                }
-                else
-                {
-                    FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
-                    String UserId=user.getUid();
-                    DatabaseReference UserReference=FirebaseDatabase.getInstance().getReference("UserData");
-                    UserReference.child(UserId).child(USERNAME).setValue(eUsername_Settings.getText().toString().trim());
-                    UserReference.child(UserId).child(EMAIL).setValue(eEmail_Settings.getText().toString().trim());
-                }
-            }
-        });
+        cdChangeUserDetails=view.findViewById(R.id.cdChangeUserDetails);
+        cdSignout = view.findViewById(R.id.cdSignout);
+        cdAboutUs = view.findViewById(R.id.cdAboutUs);
+        cdOutlets=view.findViewById(R.id.cdOutlets);
 
         /*********Reading Database to set the the info header********/
         FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
@@ -158,6 +141,41 @@ public class SettingsFragment extends Fragment {
 
 
 
+        cdChangeUserDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(),new ChangeUserDetails().getClass());
+                startActivity(i);
+
+            }
+        });
+
+        cdSignout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent i = new Intent(getActivity(),new MainActivity().getClass());
+                startActivity(i);
+                getActivity().finish();
+            }
+        });
+
+        cdAboutUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent(getActivity(),new AboutUs().getClass());
+                startActivity(i);
+            }
+        });
+
+        cdOutlets.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(),new Outlets().getClass());
+                startActivity(i);
+            }
+        });
         return view;
     }
 
@@ -168,6 +186,10 @@ public class SettingsFragment extends Fragment {
         }
     }
 
+
+
+
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -176,6 +198,8 @@ public class SettingsFragment extends Fragment {
         } else {
             Log.d(TAG,"Settings Fragment  onAttach called");
         }
+
+
     }
 
     @Override
@@ -184,6 +208,8 @@ public class SettingsFragment extends Fragment {
         mListener = null;
         Log.d(TAG,"Settings Fragment onDetach called");
     }
+
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -199,8 +225,5 @@ public class SettingsFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-    public void Change(View view)
-    {
 
-    }
 }

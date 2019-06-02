@@ -23,6 +23,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 /**
@@ -111,7 +113,7 @@ public class HistoryFragment extends Fragment {
                     final String orderId = orderSnapshot.getKey();
 
                     final String UserId =FirebaseAuth.getInstance().getCurrentUser().getUid().toString() ;
-                    final String Paid = orderSnapshot.child("Paid").getValue(String.class);
+                    final String Paid = orderSnapshot.child("Amount").getValue(String.class);
                     final String PaymentType = orderSnapshot.child("PaymentType").getValue(String.class);
                     final String Progress = orderSnapshot.child("Progress").getValue(String.class);
                     final long TotalItems = orderSnapshot.child("Items").getChildrenCount();
@@ -149,6 +151,7 @@ public class HistoryFragment extends Fragment {
                                     {
                                         //set adapter and linear layout manager
                                         rOrders = layout.findViewById(R.id.rOrders);
+                                        sortOrders(orderList);
                                         OrdersListAdapter ordersListAdapter = new OrdersListAdapter(getContext(),orderList);
                                         rOrders.setAdapter(ordersListAdapter);
                                         rOrders.addItemDecoration(new DividerItemDecoration(rOrders.getContext(),DividerItemDecoration.VERTICAL));
@@ -214,5 +217,31 @@ public class HistoryFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void sortOrders(ArrayList<Order> orders)
+    {
+        Collections.sort(orders, new Comparator<Order>() {
+            @Override
+            public int compare(Order o1, Order o2) {
+                String id1 = o1.orderId;
+                String id2 = o2.orderId;
+                for (int i = 0; i < 8; i++) {
+                    if (id1.charAt(i) > id2.charAt(i)) {
+                        return -1;
+                    } else if (id2.charAt(i) > id1.charAt(i)) {
+                        return 1;
+                    }
+                }
+                if (id2.length() > id1.length()) {
+                    return 1;
+                } else if (id1.length() > id2.length()) {
+                    return -1;
+                } else {
+                    return Integer.compare(Integer.parseInt(id2), Integer.parseInt(id1));
+                }
+
+            }
+        });
     }
 }

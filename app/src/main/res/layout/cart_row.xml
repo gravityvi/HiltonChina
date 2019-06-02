@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:background="#ffffff"
+<LinearLayout android:background="#ffffff"
     android:id="@+id/lCartRow"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,7 +8,8 @@
     android:padding="10dp"
     android:layout_width="match_parent"
     android:layout_height="170dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_weight="3"
@@ -101,6 +101,7 @@
             android:gravity="right">
 
             <TextView
+                android:textStyle="bold"
                 android:layout_weight="1"
                 android:textColor="#000000"
                 android:textSize="16dp"
@@ -112,12 +113,13 @@
 
                 />
 
-            <Button
-                android:elevation="10dp"
-                android:background="#00E676"
-                android:layout_weight="1"
+            <android.support.design.button.MaterialButton
+                app:cornerRadius="5dp"
+                android:textColor="#000"
+                android:textSize="18sp"
+                android:backgroundTint="@color/colorPrimary"
                 android:id="@+id/bRemove1"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Remove" />
 

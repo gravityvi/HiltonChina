@@ -106,7 +106,7 @@ public class MerchantActivity extends AppCompatActivity implements PaymentResult
                 .build();
 
         /**** creating adapter for auto complete texr view and setting adapter to text view***/
-        placeAutocompleteAdapter = new PlaceAutocompleteAdapter(this, geoDataClient, new LatLngBounds(new LatLng(22, 73), new LatLng(23, 74)), null);
+        placeAutocompleteAdapter = new PlaceAutocompleteAdapter(this, geoDataClient, new LatLngBounds(new LatLng(22.310696, 73.192635), new LatLng(22.320696, 73.202635)), null);
         eAddress.setAdapter(placeAutocompleteAdapter);
 
         /***progress Dialogue****/
@@ -172,8 +172,8 @@ public class MerchantActivity extends AppCompatActivity implements PaymentResult
             /**
              * Amount is always passed in PAISE
              */
-            amount = amount * 100; //converting in rupees
-            options.put("amount", Integer.toString(amount));
+            long Amount = amount*100;
+            options.put("amount", Long.toString(Amount));
             checkout.open(activity, options);
         } catch (Exception e) {
             System.out.println("RazorPay error :" + e.toString());
@@ -302,7 +302,7 @@ public class MerchantActivity extends AppCompatActivity implements PaymentResult
             public void onSuccess(InstanceIdResult instanceIdResult) {
                 String newToken = instanceIdResult.getToken();
                 token[0] = newToken;
-                pushItems(amount,paymentType);
+                pushItems(paid,paymentType);
 
 
             }

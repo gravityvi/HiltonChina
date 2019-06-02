@@ -15,7 +15,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".OrderItems"></activity>
+        <activity android:name=".Outlets"></activity>
+        <activity android:name=".AboutUs" />
+        <activity android:name=".ChangeUserDetails" />
+        <activity android:name=".OrderItems" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,13 +32,11 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="http"
-                    android:host="www.devbites.com" />
+                    android:host="www.devbites.com"
+                    android:scheme="http" />
             </intent-filter>
         </activity>
-        <activity android:name=".Home">
-
-        </activity>
+        <activity android:name=".Home" />
         <activity android:name=".UserInfo" />
         <activity android:name=".StripePayment" />
 
@@ -67,7 +68,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAx8tveEl_lBs0bM4BOGLo-axhUJYfdrE0" />
+            android:value="AIzaSyDQ6_-JCx2I1qelrNxUpWq7Y1ICDypaWOI" />
     </application>
 
 </manifest>
