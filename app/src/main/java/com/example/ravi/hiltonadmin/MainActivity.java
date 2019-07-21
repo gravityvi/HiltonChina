@@ -218,7 +218,10 @@ public class MainActivity extends AppCompatActivity {
         if(mverificationinprogress && validatephonenumber() )
         {
 
-            startphonenumberverification(ephone.getText().toString().trim());
+            StringBuilder sb = new StringBuilder();
+            sb.append("+91");
+            sb.append(sb.append(ephone.getText().toString().trim()));
+            startphonenumberverification(sb.toString());
         }
 
 
@@ -539,8 +542,10 @@ public class MainActivity extends AppCompatActivity {
         }
         else
         {
-
-            startphonenumberverification(ephone.getText().toString().trim());
+            StringBuilder sb = new StringBuilder();
+            sb.append("+91");
+            sb.append(sb.append(ephone.getText().toString().trim()));
+            startphonenumberverification(sb.toString());
         }
     }
 

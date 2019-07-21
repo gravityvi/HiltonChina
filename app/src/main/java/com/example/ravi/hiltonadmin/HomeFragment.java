@@ -116,10 +116,6 @@ public class HomeFragment extends Fragment {
         ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getContext());
         ViewPager.setAdapter(viewPagerAdapter);
 
-
-        Timer timer =new Timer(); //making swiping automatic
-        timer.scheduleAtFixedRate(new MyTimerTask() ,2000, 4000);
-
         dotcount=viewPagerAdapter.getCount();
         dots=new ImageView[dotcount];
 
@@ -238,7 +234,7 @@ public class HomeFragment extends Fragment {
                         else if(ViewPager.getCurrentItem()==1)
                             ViewPager.setCurrentItem(2);
                         else if(ViewPager.getCurrentItem()==2)
-                            ViewPager.setCurrentItem(0);
+                            ;
 
                     }
                 });
@@ -247,7 +243,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    /*******************************************************/
+    /**********************************************************************************/
 
 
 }

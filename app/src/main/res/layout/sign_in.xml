@@ -72,13 +72,13 @@
 
 
     <TextView
+        android:layout_marginLeft="10dp"
         android:textColor="#000"
         android:layout_margin="15dp"
         android:id="@+id/tRegisterStatus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tResend"
-        android:layout_marginTop="40dp"
+        android:layout_centerInParent="true"
         android:text="Welccome We are Pleased to See you"
         android:textSize="18dp" />
 

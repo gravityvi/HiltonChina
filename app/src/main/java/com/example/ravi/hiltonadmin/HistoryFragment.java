@@ -238,7 +238,7 @@ public class HistoryFragment extends Fragment {
                 } else if (id1.length() > id2.length()) {
                     return -1;
                 } else {
-                    return Integer.compare(Integer.parseInt(id2), Integer.parseInt(id1));
+                    return -Long.compare(Long.parseLong(id1),Long.parseLong(id2));
                 }
 
             }

@@ -37,14 +37,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.mikhaellopez.circularimageview.CircularImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:scaleType="centerCrop"
                     android:layout_alignParentLeft="true"
                     android:id="@+id/ciVinay"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:src="@drawable/vinay">
-                </com.mikhaellopez.circularimageview.CircularImageView>
+                </de.hdodenhof.circleimageview.CircleImageView>
 
                 <TextView
                     android:id="@+id/tvName"
@@ -93,14 +93,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.mikhaellopez.circularimageview.CircularImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:scaleType="centerCrop"
                     android:layout_alignParentLeft="true"
                     android:id="@+id/ciDinesh"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:src="@drawable/dinesh">
-                </com.mikhaellopez.circularimageview.CircularImageView>
+                </de.hdodenhof.circleimageview.CircleImageView>
 
                 <TextView
                     android:id="@+id/tdName"
@@ -150,14 +150,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.mikhaellopez.circularimageview.CircularImageView
-                    android:scaleType="centerInside"
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:scaleType="centerCrop"
                     android:layout_alignParentLeft="true"
-                    android:id="@+id/ciRavi"
+                    android:id="@+id/ciJames"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:src="@drawable/james">
-                </com.mikhaellopez.circularimageview.CircularImageView>
+                </de.hdodenhof.circleimageview.CircleImageView>
 
                 <TextView
                     android:id="@+id/trName"

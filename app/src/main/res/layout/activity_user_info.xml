@@ -12,23 +12,25 @@
         android:id="@+id/tDatastatus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Please provide us with your Name and Email Address"/>
+        android:text="Please provide us with your Name and Email Address ☺️"/>
 
-    <EditText
+    <android.support.design.widget.TextInputEditText
         android:id="@+id/eUsername"
         android:hint="Username"
         android:layout_marginTop="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <EditText
 
+
+    <android.support.design.widget.TextInputEditText
         android:layout_marginTop="20dp"
         android:id="@+id/eEmail"
         android:layout_width="match_parent"
         android:hint="Email Address"
         android:layout_height="wrap_content" />
-    <Button
+    <android.support.design.button.MaterialButton
         android:id="@+id/bSignin"
+        android:textColor="#000"
         android:layout_marginTop="40dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
